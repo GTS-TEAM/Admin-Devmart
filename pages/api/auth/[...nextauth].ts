@@ -1,10 +1,37 @@
 import axios from 'axios';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 import NextAuth from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { IResLogin } from 'shared/types';
+import { IResLogin, IToken } from 'shared/types';
 
-const handleRefreshToken = async () => {};
+const handleRefreshToken = async (token: JWT) => {
+   try {
+      const tokenData: IToken = await axios
+         .post('http://3.0.102.186/api/auth/refresh-token', {
+            refresh_token: token.refreshToken,
+         })
+         .then((value) => value.data.data);
+
+      console.log('refresh token here:', tokenData);
+      const { access_token: accessToken, refresh_token: refreshToken } =
+         tokenData;
+      const accessTokenExpirationTime =
+         (jwt_decode<JwtPayload>(accessToken).exp as number) * 1000;
+      return {
+         ...token,
+         accessToken,
+         accessTokenExpires: accessTokenExpirationTime,
+         refreshToken: refreshToken ?? token.refreshToken, // Fall back to old refresh token
+      };
+   } catch (error) {
+      console.log(error);
+      return {
+         ...token,
+         error: 'RefreshAccessTokenError',
+      };
+   }
+};
 
 export default NextAuth({
    // Configure one or more authentication providers
@@ -79,7 +106,7 @@ export default NextAuth({
 
          // refresh token here
          // nguoc lai thi refresh token
-         return token;
+         return await handleRefreshToken(token);
       },
       async session({ session, token }) {
          //@ts-ignore
