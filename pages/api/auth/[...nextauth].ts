@@ -1,14 +1,16 @@
 import axios from 'axios';
+import { BASE_URL_API, ERROR_TOKEN } from 'constant';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { signOut } from 'next-auth/react';
 import { IResLogin, IToken } from 'shared/types';
 
 const handleRefreshToken = async (token: JWT) => {
    try {
       const tokenData: IToken = await axios
-         .post('http://3.0.102.186/api/auth/refresh-token', {
+         .post(`${BASE_URL_API}/auth/refresh-token`, {
             refresh_token: token.refreshToken,
          })
          .then((value) => value.data.data);
@@ -17,7 +19,7 @@ const handleRefreshToken = async (token: JWT) => {
       const { access_token: accessToken, refresh_token: refreshToken } =
          tokenData;
       const accessTokenExpirationTime =
-         (jwt_decode<JwtPayload>(accessToken).exp as number) * 1000;
+         (jwt_decode<JwtPayload>(accessToken).exp as number) * 1000 - 10;
       return {
          ...token,
          accessToken,
@@ -25,10 +27,10 @@ const handleRefreshToken = async (token: JWT) => {
          refreshToken: refreshToken ?? token.refreshToken, // Fall back to old refresh token
       };
    } catch (error) {
-      console.log(error);
+      signOut();
       return {
          ...token,
-         error: 'RefreshAccessTokenError',
+         error: ERROR_TOKEN,
       };
    }
 };
@@ -51,7 +53,7 @@ export default NextAuth({
             try {
                //login
                const data: IResLogin = await axios
-                  .post(`http://3.0.102.186/api/auth/login`, {
+                  .post(`${BASE_URL_API}/auth/login`, {
                      email: credentials?.email,
                      password: credentials?.password,
                   })
@@ -65,7 +67,9 @@ export default NextAuth({
                   } = data.token;
 
                   const accessTokenExpirationTime =
-                     (jwt_decode<JwtPayload>(accessToken).exp as number) * 1000; // parse tk token ra de lay cai gia tri het han * 1000 de lay ms
+                     (jwt_decode<JwtPayload>(accessToken).exp as number) *
+                        1000 -
+                     10; // parse tk token ra de lay cai gia tri het han * 1000 de lay ms
 
                   return {
                      ...data.user,

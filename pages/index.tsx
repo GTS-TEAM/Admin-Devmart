@@ -1,5 +1,6 @@
+import { ERROR_TOKEN } from 'constant';
 import type { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useEffect } from 'react';
@@ -13,6 +14,14 @@ const Home: NextPage = () => {
          console.log(value);
       });
    }, []);
+
+   useEffect(() => {
+      console.log(session?.error);
+      if (session?.error === ERROR_TOKEN) {
+         signIn();
+         return;
+      }
+   }, [session]);
 
    return (
       <div className={styles.container}>
