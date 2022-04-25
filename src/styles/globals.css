@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+   :root {
+      --vz-blue: #3577f1;
+      --vz-indigo: #405189;
+      --vz-purple: #6559cc;
+      --vz-pink: #f672a7;
+      --vz-red: #f06548;
+      --vz-orange: #f1963b;
+      --vz-yellow: #f7b84b;
+      --vz-green: #0ab39c;
+      --vz-teal: #02a8b5;
+      --vz-cyan: #299cdb;
+      --vz-white: #fff;
+      --vz-gray: #878a99;
+      --vz-gray-dark: #343a40;
+      --vz-gray-100: #f3f6f9;
+      --vz-gray-200: #eff2f7;
+      --vz-gray-300: #e9ebec;
+      --vz-gray-400: #ced4da;
+      --vz-gray-500: #adb5bd;
+      --vz-gray-600: #878a99;
+      --vz-gray-700: #495057;
+      --vz-gray-800: #343a40;
+      --vz-gray-900: #212529;
+      --vz-primary: #405189;
+      --vz-secondary: #3577f1;
+      --vz-success: #0ab39c;
+      --vz-info: #299cdb;
+      --vz-warning: #f7b84b;
+      --vz-danger: #f06548;
+      --vz-light: #f3f6f9;
+      --vz-dark: #212529;
+      --vz-primary-rgb: 64, 81, 137;
+      --vz-secondary-rgb: 53, 119, 241;
+      --vz-success-rgb: 10, 179, 156;
+      --vz-info-rgb: 41, 156, 219;
+      --vz-warning-rgb: 247, 184, 75;
+      --vz-danger-rgb: 240, 101, 72;
+      --vz-light-rgb: 243, 246, 249;
+      --vz-dark-rgb: 33, 37, 41;
+      --vz-white-rgb: 255, 255, 255;
+      --vz-black-rgb: 0, 0, 0;
+      --vz-body-color-rgb: 33, 37, 41;
+      --vz-body-bg-rgb: 243, 243, 249;
+      --vz-font-sans-serif: 'Poppins', sans-serif;
+      --vz-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+         'Liberation Mono', 'Courier New', monospace;
+      --vz-gradient: linear-gradient(
+         180deg,
+         rgba(255, 255, 255, 0.15),
+         rgba(255, 255, 255, 0)
+      );
+      --vz-body-font-family: var(--vz-font-sans-serif);
+      --vz-body-font-size: 0.8125rem;
+      --vz-body-font-weight: 400;
+      --vz-body-line-height: 1.5;
+      --vz-body-color: #212529;
+      --vz-body-bg: #f3f3f9;
+      --vz-body-bg: #f3f3f9;
+      --vz-body-color: #212529;
+      --vz-body-color-rgb: 33, 37, 41;
+      --vz-vertical-menu-bg: #fff;
+      --vz-vertical-menu-item-color: #6d7080;
+      --vz-vertical-menu-item-hover-color: #405189;
+      --vz-vertical-menu-item-active-color: #405189;
+      --vz-vertical-menu-sub-item-color: #7c7f90;
+      --vz-vertical-menu-sub-item-hover-color: #405189;
+      --vz-vertical-menu-sub-item-active-color: #405189;
+      --vz-vertical-menu-title-color: #919da9;
+      --vz-vertical-menu-bg-dark: #405189;
+      --vz-vertical-menu-item-color-dark: #abb9e8;
+      --vz-vertical-menu-item-hover-color-dark: #fff;
+      --vz-vertical-menu-item-active-color-dark: #fff;
+      --vz-vertical-menu-sub-item-color-dark: #abb9e8;
+      --vz-vertical-menu-sub-item-hover-color-dark: #fff;
+      --vz-vertical-menu-sub-item-active-color-dark: #fff;
+      --vz-vertical-menu-title-color-dark: #838fb9;
+      --vz-header-bg: #fff;
+      --vz-header-item-color: #e9ecef;
+      --vz-header-bg-dark: #405189;
+      --vz-header-item-color-dark: #b0c4d9;
+      --vz-topbar-search-bg: #f3f3f9;
+      --vz-topbar-user-bg: #f3f3f9;
+      --vz-topbar-user-bg-dark: #52639c;
+      --vz-footer-bg: #fff;
+      --vz-footer-color: #98a6ad;
+      --vz-topnav-bg: #fff;
+      --vz-topnav-item-color: #6d7080;
+      --vz-topnav-item-color-active: #405189;
+      --vz-twocolumn-menu-iconview-bg: #fff;
+      --vz-twocolumn-menu-bg: #fff;
+      --vz-twocolumn-menu-iconview-bg-dark: var(--vz-vertical-menu-bg-dark);
+      --vz-twocolumn-menu-bg-dark: #435590;
+      --vz-twocolumn-menu-item-color-dark: var(
+         --vz-vertical-menu-item-color-dark
+      );
+      --vz-twocolumn-menu-item-active-color-dark: #fff;
+      --vz-twocolumn-menu-item-active-bg-dark: rgba(255, 255, 255, 0.15);
+      --vz-boxed-body-bg: #e5e5f2;
+      --vz-heading-color: #495057;
+      --vz-light: #f3f6f9;
+      --vz-light-rgb: 243, 246, 249;
+      --vz-dark: #212529;
+      --vz-dark-rgb: 33, 37, 41;
+      --vz-link-color: #405189;
+      --vz-link-hover-color: #405189;
+      --vz-border-color: #e9ebec;
+      --vz-dropdown-bg: #fff;
+      --vz-dropdown-link-color: #212529;
+      --vz-dropdown-link-hover-color: #1e2125;
+      --vz-dropdown-link-hover-bg: #f3f6f9;
+      --vz-dropdown-border-width: 0px;
+      --vz-card-bg: #fff;
+      --vz-card-cap-bg: #fff;
+      --vz-card-logo-dark: block;
+      --vz-card-logo-light: none;
+      --vz-modal-bg: #fff;
+      --vz-nav-tabs-link-active-color: #495057;
+      --vz-nav-tabs-link-active-bg: #f3f3f9;
+      --vz-accordion-button-active-color: #3a497b;
+      --vz-progress-bg: #eff2f7;
+      --vz-toast-background-color: rgba(255, 255, 255, 0.85);
+      --vz-toast-border-color: rgba(0, 0, 0, 0.1);
+      --vz-toast-header-border-color: rgba(0, 0, 0, 0.05);
+      --vz-list-group-hover-bg: #f3f6f9;
+      --vz-popover-bg: #fff;
+      --vz-pagination-hover-bg: #eff2f7;
+      --vz-input-bg: #fff;
+      --vz-input-border: #ced4da;
+      --vz-input-focus-border: #a0a8c4;
+      --vz-input-disabled-bg: #eff2f7;
+      --vz-input-group-addon-bg: #eff2f7;
+      --vz-input-check-border: var(--vz-input-border);
+   }
+
+   html {
+      font-family: 'Poppins', sans-serif;
+   }
+   body {
+      font-family: 'Poppins', sans-serif;
+      @apply bg-vz-body-color;
+   }
+}
+
+/*============================ text global ==============================*/
+.text-primary {
+   @apply text-vz-primary;
+}
+
+.text-muted {
+   @apply text-[#878a99];
+}
+/*============================ text global ==============================*/
+
+/*============================ card global ==============================*/
+.card {
+   @apply relative flex rounded bg-white shadow-vz-card;
+   border: 0 solid rgba(0, 0, 0, 0.125);
+}
+/*============================ card global ==============================*/
+/*============================ button global ==============================*/
+
+.vz-button-primary {
+   @apply text-white hover:bg-[#099885] hover:text-white !border-0 py-2 px-4 leading-[1.5] flex items-center justify-center focus:bg-[#099885] focus:text-white rounded min-h-[37.5px] active:bg-[#099885] active:text-white;
+   background-color: var(--vz-green);
+}
+
+.ant-btn-loading-icon {
+   @apply !flex items-center justify-center;
+}
+
+/*============================ button global ==============================*/
+/*============================ ant message global ==============================*/
+.ant-message-custom-content {
+   @apply flex items-center justify-center;
+}
+
+/*============================ ant message global ==============================*/
+/*============================ input global ==============================*/
+input.vz-input.isError {
+   @apply border-red-600;
+}
+/*============================ input global ==============================*/

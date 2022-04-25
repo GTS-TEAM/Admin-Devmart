@@ -4,7 +4,6 @@ import jwt_decode, { JwtPayload } from 'jwt-decode';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { signOut } from 'next-auth/react';
 import { IResLogin, IToken } from 'shared/types';
 
 const handleRefreshToken = async (token: JWT) => {
@@ -27,7 +26,6 @@ const handleRefreshToken = async (token: JWT) => {
          refreshToken: refreshToken ?? token.refreshToken, // Fall back to old refresh token
       };
    } catch (error) {
-      signOut();
       return {
          ...token,
          error: ERROR_TOKEN,
@@ -80,8 +78,7 @@ export default NextAuth({
                }
                return null;
             } catch (e: any) {
-               console.log(e);
-               // throw new Error(errorMessage);
+               throw new Error(e.response.data.message);
             }
          },
       }),
@@ -119,5 +116,8 @@ export default NextAuth({
          session.error = token.error;
          return session;
       },
+   },
+   pages: {
+      signIn: '/login',
    },
 });
