@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL_API, ERROR_TOKEN } from 'constant';
+import { BASE_URL_API, ERROR_TOKEN, ROUTES } from 'constant';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
@@ -78,6 +78,7 @@ export default NextAuth({
                }
                return null;
             } catch (e: any) {
+               console.log(e);
                throw new Error(e.response.data.message);
             }
          },
@@ -118,6 +119,6 @@ export default NextAuth({
       },
    },
    pages: {
-      signIn: '/login',
+      signIn: ROUTES.LOGIN,
    },
 });

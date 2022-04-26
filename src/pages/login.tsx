@@ -1,5 +1,6 @@
 import { Button, message, Typography } from 'antd';
-import BannerAuth from 'components/BannerAuth';
+import BannerAuth from 'components/common/BannerAuth';
+import { ROUTES } from 'constant';
 import { InputCustom } from 'custom';
 import { NextPageContext } from 'next';
 import { getSession, signIn } from 'next-auth/react';
@@ -92,7 +93,7 @@ const Login: React.FC = () => {
                                           'Login successfully',
                                           10000
                                        );
-                                       router.push('/');
+                                       router.push(ROUTES.HOME);
                                     }
                                  }}
                                  loading={isLoading}
@@ -110,7 +111,7 @@ const Login: React.FC = () => {
                   </div>
                   <Typography.Paragraph className="text-center mt-6">
                      {"Don't have an account ? "}
-                     <Link href="/signup">
+                     <Link href={ROUTES.SIGN_UP}>
                         <a className="!underline !text-vz-primary font-medium">
                            Signup
                         </a>
@@ -127,11 +128,14 @@ export default Login;
 
 export async function getServerSideProps(context: NextPageContext) {
    const session = await getSession(context);
+
+   console.log(session);
+
    if (session) {
       return {
          redirect: {
             permanent: false,
-            destination: '/',
+            destination: ROUTES.HOME,
          },
       };
    }

@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, message, Typography } from 'antd';
 import axios from 'axios';
-import BannerAuth from 'components/BannerAuth';
-import { BASE_URL_API } from 'constant';
+import BannerAuth from 'components/common/BannerAuth';
+import { BASE_URL_API, ROUTES } from 'constant';
 import { InputCustom } from 'custom';
 import { NextPageContext } from 'next';
 import { getSession } from 'next-auth/react';
@@ -56,17 +56,17 @@ const SignUp = () => {
          });
          setLoading(false);
          message.success('Register successfully');
-         router.push('/login');
+         router.push(ROUTES.LOGIN);
       } catch (error: any) {
          setLoading(false);
-         message.error(error.response.data.message);
+         message.error(error.response?.data.message);
       }
    };
 
    return (
       <>
          <Head>
-            <title>Sign In | E-commerce Admin</title>
+            <title>Sign Up | E-commerce Admin</title>
             <meta
                content="E-commerce Admin &amp; Dashboard Admin"
                name="description"
@@ -215,7 +215,7 @@ const SignUp = () => {
                   </div>
                   <Typography.Paragraph className="text-center mt-6">
                      {'Already have an account ?'}
-                     <Link href="/login">
+                     <Link href={ROUTES.LOGIN}>
                         <a className="!underline !text-vz-primary font-medium">
                            Login
                         </a>
@@ -236,7 +236,7 @@ export async function getServerSideProps(context: NextPageContext) {
       return {
          redirect: {
             permanent: false,
-            destination: '/',
+            destination: ROUTES.HOME,
          },
       };
    }

@@ -1,5 +1,5 @@
 import React from 'react';
-import ShapeLogin from '../../../public/shapeLogin.svg';
+import ShapeLogin from '../../../../public/shapeLogin.svg';
 
 const BannerAuth = () => {
    return (

@@ -1,3 +1,6 @@
+import { MenuProps } from 'antd';
+import { ReactElement, ReactNode } from 'react';
+
 export interface IUser {
    id: string;
    created_at: string;
@@ -17,3 +20,9 @@ export interface IResLogin {
    user: IUser;
    token: IToken;
 }
+
+export type WithLayout = {
+   getLayout?: (page: ReactElement) => ReactNode;
+};
+
+export type MenuItem = Required<MenuProps>['items'][number];
