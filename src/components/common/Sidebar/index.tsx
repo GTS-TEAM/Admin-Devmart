@@ -59,7 +59,7 @@ const Sidebar: React.FC<Props> = ({ isResize, isShowSidebar }) => {
                                        (isResize
                                           ? 'opacity-0 invisible'
                                           : 'opacity-100 visible')
-                                    } `}
+                                    } ''`}
                                  >
                                     {item.name}
                                  </span>
