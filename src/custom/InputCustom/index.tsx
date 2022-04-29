@@ -1,4 +1,5 @@
 import { Input, InputProps } from 'antd';
+import { TextAreaProps } from 'antd/lib/input';
 import React from 'react';
 
 interface Props extends InputProps {
@@ -8,6 +9,8 @@ interface Props extends InputProps {
    classNameWrap?: string;
    isRequire?: boolean;
    error?: string;
+   isTextArea?: boolean;
+   propsTextArea?: TextAreaProps;
 }
 
 export const InputCustom = React.forwardRef<any, Props>(
@@ -34,15 +37,31 @@ export const InputCustom = React.forwardRef<any, Props>(
                   {isRequire && <span className="text-red-600 ml-1">*</span>}
                </label>
             )}
-            <Input
-               //@ts-ignore
-               {...props}
-               className={`rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2 placeholder:font-medium vz-input  ${
-                  props.className || ''
-               } ${error ? 'isError' : ''}`}
-               //@ts-ignore
-               ref={ref}
-            />
+
+            {props.isTextArea ? (
+               <Input.TextArea
+                  {...props.propsTextArea}
+                  className={`rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2 placeholder:font-medium vz-input  ${
+                     props.propsTextArea?.className || ''
+                  } ${props.className || ''} ${
+                     error ? 'isError' : ''
+                  } h-[37.5px] bg-vz-input-bg border-vz-input-border text-vz-text-color-body`}
+                  //@ts-ignore
+                  ref={ref}
+               ></Input.TextArea>
+            ) : (
+               <Input
+                  //@ts-ignore
+                  {...props}
+                  className={`rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2 placeholder:font-medium vz-input  ${
+                     props.className || ''
+                  } ${
+                     error ? 'isError' : ''
+                  } h-[37.5px] bg-vz-input-bg border-vz-input-border text-vz-text-color-body`}
+                  //@ts-ignore
+                  ref={ref}
+               />
+            )}
             {error && <p className="text-red-600 mt-1">{error}</p>}
          </div>
       );

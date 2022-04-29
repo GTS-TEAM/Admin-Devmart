@@ -69,7 +69,7 @@ const Login: React.FC = () => {
                               />
                               <Button
                                  htmlType="submit"
-                                 className="w-full vz-button-primary"
+                                 className="w-full vz-button-primary vz-button"
                                  onClick={async (e) => {
                                     e.preventDefault();
                                     setIsLoading(true);

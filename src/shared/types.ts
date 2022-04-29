@@ -11,6 +11,17 @@ export interface IUser {
    role: string;
 }
 
+export interface ICategory {
+   id: string;
+   created_at: string;
+   updated_at: string;
+   deleted_at: any;
+   name: string;
+   description: string;
+}
+
+export interface IProduct {}
+
 export interface IToken {
    access_token: string;
    refresh_token: string;
@@ -19,6 +30,11 @@ export interface IToken {
 export interface IResLogin {
    user: IUser;
    token: IToken;
+}
+
+export interface IResData<T> {
+   message: string;
+   data: T;
 }
 
 export type WithLayout = {

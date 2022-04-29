@@ -1,14 +1,11 @@
 import axios from 'axios';
+import { BASE_URL_API } from 'constant';
 import { getSession } from 'next-auth/react';
 
-const baseURL = 'http://3.0.102.186/api/';
-
 const ApiClient = () => {
-   const defaultOptions = {
-      baseURL,
-   };
-
-   const instance = axios.create(defaultOptions);
+   const instance = axios.create({
+      baseURL: BASE_URL_API,
+   });
 
    instance.interceptors.request.use(async (request) => {
       const session = await getSession();

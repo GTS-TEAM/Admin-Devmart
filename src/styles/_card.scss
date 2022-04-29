@@ -1,0 +1,4 @@
+.card {
+   @apply relative flex rounded bg-vz-card-bg shadow-vz-card;
+   border: 0 solid rgba(0, 0, 0, 0.125);
+}

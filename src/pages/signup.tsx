@@ -204,7 +204,7 @@ const SignUp = () => {
 
                               <Button
                                  htmlType="submit"
-                                 className="w-full vz-button-primary"
+                                 className="w-full vz-button-primary vz-button"
                                  loading={loading}
                               >
                                  Sign in

@@ -3,11 +3,14 @@ import {
    AiOutlineAppstore,
    AiOutlineContainer,
    AiOutlineShop,
+   AiOutlineSlack,
    AiOutlineUser,
 } from 'react-icons/ai';
 
 export const ERROR_TOKEN = 'RefreshAccessTokenError';
+
 export const BASE_URL_API = 'http://3.0.102.186/api';
+
 export const ROUTES = {
    LOGIN: '/login',
    SIGN_UP: '/signup',
@@ -16,8 +19,12 @@ export const ROUTES = {
    ADD_PRODUCT: '/add-product',
    ORDERS: '/orders',
    CUSTOMERS: '/customer',
+   CATEGORIES: '/categories',
+   ADD_CATEGORIES: '/add-category',
 };
+
 export const IS_SERVER = typeof window === 'undefined';
+
 export const SIDEBAR: {
    name: string;
    icon: IconType;
@@ -27,6 +34,12 @@ export const SIDEBAR: {
       name: 'Dashboard',
       icon: AiOutlineAppstore,
       path: ROUTES.HOME,
+   },
+
+   {
+      name: 'Categories',
+      icon: AiOutlineSlack,
+      path: ROUTES.CATEGORIES,
    },
    {
       name: 'Products',
@@ -44,3 +57,9 @@ export const SIDEBAR: {
       path: ROUTES.ORDERS,
    },
 ];
+
+export const TYPE_VARIANTS = {
+   HIDDEN: 'hidden',
+   VISIBLE: 'visible',
+   EXIT: 'exit',
+};

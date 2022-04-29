@@ -1,6 +1,6 @@
-import { Layout } from 'components/common';
+import { Auth, Layout, requireAuth } from 'components/common';
 import instance from 'lib/axiosClient';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { WithLayout } from 'shared/types';
@@ -9,7 +9,7 @@ const Home: NextPage & WithLayout = () => {
    const { data: session } = useSession();
 
    useEffect(() => {
-      instance.get('user').then((value) => {
+      instance.get('category/').then((value) => {
          console.log(value);
       });
    }, []);
@@ -20,11 +20,15 @@ const Home: NextPage & WithLayout = () => {
 export default Home;
 
 Home.getLayout = (page) => {
-   return <Layout>{page}</Layout>;
+   return (
+      <Auth>
+         <Layout>{page}</Layout>
+      </Auth>
+   );
 };
 
-// export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
-//    return {
-//       props: {},
-//    };
-// });
+export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
+   return {
+      props: {},
+   };
+});

@@ -6,6 +6,7 @@ const Auth: React.FC<{
    children?: React.ReactNode;
 }> = ({ children }) => {
    const { data: session } = useSession();
+
    useEffect(() => {
       if (session?.error === ERROR_TOKEN) {
          signOut();

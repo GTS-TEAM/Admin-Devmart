@@ -1,6 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@use '~tailwindcss/base';
+@use '~tailwindcss/components';
+@use '~tailwindcss/utilities';
+@use './nprogress';
+@use './customtable';
+@use './button';
+@use './card';
+@use './input';
+@use './text';
 
 @layer base {
    :root {
@@ -153,7 +159,7 @@
    h4,
    h5,
    h6 {
-      color: var(--vz-body-color);
+      color: var(--vz-heading-color);
    }
 
    [data-theme='dark'] {
@@ -244,42 +250,10 @@
    }
 }
 
-/*============================ text global ==============================*/
-.text-primary {
-   @apply text-vz-primary;
+[ant-click-animating-without-extra-node='true']::after {
+   display: none;
 }
 
-.text-muted {
-   @apply text-[#878a99];
-}
-/*============================ text global ==============================*/
-
-/*============================ card global ==============================*/
-.card {
-   @apply relative flex rounded bg-white shadow-vz-card;
-   border: 0 solid rgba(0, 0, 0, 0.125);
-}
-/*============================ card global ==============================*/
-/*============================ button global ==============================*/
-
-.vz-button-primary {
-   @apply text-white hover:bg-[#099885] hover:text-white !border-0 py-2 px-4 leading-[1.5] flex items-center justify-center focus:bg-[#099885] focus:text-white rounded min-h-[37.5px] active:bg-[#099885] active:text-white;
-   background-color: var(--vz-green);
-}
-
-.ant-btn-loading-icon {
-   @apply !flex items-center justify-center;
-}
-
-/*============================ button global ==============================*/
-/*============================ ant message global ==============================*/
 .ant-message-custom-content {
    @apply flex items-center justify-center;
 }
-
-/*============================ ant message global ==============================*/
-/*============================ input global ==============================*/
-input.vz-input.isError {
-   @apply border-red-600;
-}
-/*============================ input global ==============================*/

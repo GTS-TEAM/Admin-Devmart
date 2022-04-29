@@ -1,4 +1,4 @@
-import { useObservationSize } from 'hooks';
+import { useBodyOverflow, useObservationSize } from 'hooks';
 import React, { useState } from 'react';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
@@ -10,10 +10,12 @@ const Layout: React.FC<{
    const [isShowSidebar, setIsShowSidebar] = useState<boolean>(false);
    const { width } = useObservationSize();
 
+   useBodyOverflow(isShowSidebar);
+
    return (
       <div className="min-h-screen flex layout">
          <div
-            className="fixed top-0 right-0 left-0 md:left-vz-sidebar transition-[left] duration-300 "
+            className="fixed top-0 right-0 left-0 md:left-vz-sidebar transition-[left] duration-300 z-50 "
             style={{
                left:
                   width && width > 767
@@ -36,7 +38,7 @@ const Layout: React.FC<{
             />
          </div>
          <div
-            className="bg-[rgba(33,37,41,.35)] fixed h-screen w-full inset-0 z-50"
+            className="bg-[rgba(33,37,41,.35)] fixed h-screen w-full inset-0 z-[100]"
             style={{
                display: isShowSidebar ? 'block' : 'none',
             }}
@@ -44,7 +46,13 @@ const Layout: React.FC<{
                setIsShowSidebar(false);
             }}
          ></div>
-         <Sidebar isResize={!isExpandSidebar} isShowSidebar={isShowSidebar} />
+         <Sidebar
+            isResize={!isExpandSidebar}
+            isShowSidebar={isShowSidebar}
+            onClose={() => {
+               width && width < 768 && setIsShowSidebar(false);
+            }}
+         />
          <main
             className="mt-vz-header ml-0 md:ml-vz-sidebar w-full transition-[margin-left] duration-300"
             style={{
@@ -56,7 +64,7 @@ const Layout: React.FC<{
                      : undefined,
             }}
          >
-            {children}
+            <div className="p-4">{children}</div>
          </main>
       </div>
    );

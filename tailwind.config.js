@@ -20,6 +20,13 @@ module.exports = {
                'var(--vz-vertical-menu-item-color-dark)',
             'vz-vertical-menu-title-color-dark':
                'var(--vz-vertical-menu-title-color-dark)',
+            'vz-card-bg': 'var(--vz-card-bg)',
+            'vz-border-color': ' var(--vz-border-color)',
+            'vz-link': 'var(--vz-link-color)',
+            'vz-pagination-hover-bg': 'var(--vz-pagination-hover-bg)',
+            'vz-input-bg': 'var(--vz-input-bg)',
+            'vz-input-border': 'var(--vz-input-border)',
+            'vz-text-color-body': 'var(--vz-body-color)',
          },
          boxShadow: {
             'vz-input-shadow': '0 0 0 0 rgb(64 81 137 / 25%)',
@@ -32,4 +39,8 @@ module.exports = {
       },
    },
    plugins: [],
+   future: {
+      removeDeprecatedGapUtilities: true,
+      purgeLayersByDefault: true,
+   },
 };
