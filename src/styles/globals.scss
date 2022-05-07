@@ -7,6 +7,9 @@
 @use './card';
 @use './input';
 @use './text';
+@use './add-products';
+@use './tree_select';
+@use './checkbox';
 
 @layer base {
    :root {
@@ -151,6 +154,7 @@
       font-family: 'Poppins', sans-serif;
       @apply bg-vz-body-color;
       color: var(--vz-body-color);
+      font-size: var(--vz-body-font-size);
    }
 
    h1,
@@ -256,4 +260,14 @@
 
 .ant-message-custom-content {
    @apply flex items-center justify-center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+input[type='number'] {
+   -moz-appearance: textfield;
 }

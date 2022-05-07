@@ -27,6 +27,11 @@ module.exports = {
             'vz-input-bg': 'var(--vz-input-bg)',
             'vz-input-border': 'var(--vz-input-border)',
             'vz-text-color-body': 'var(--vz-body-color)',
+            'vz-light': 'rgba(var(--vz-light-rgb),.75)',
+            'vz-dropdown-bg': 'var(--vz-dropdown-bg)',
+            'vz-dropdown-border': 'var(--vz-border-color)',
+            'vz-dropdown-link-hover-bg': 'var(--vz-dropdown-link-hover-bg)',
+            'vz-red': 'var(--vz-red)',
          },
          boxShadow: {
             'vz-input-shadow': '0 0 0 0 rgb(64 81 137 / 25%)',
@@ -38,9 +43,15 @@ module.exports = {
          },
       },
    },
-   plugins: [],
+   plugins: [
+      require('@tailwindcss/aspect-ratio'),
+      require('@tailwindcss/line-clamp'),
+   ],
    future: {
       removeDeprecatedGapUtilities: true,
       purgeLayersByDefault: true,
+   },
+   corePlugins: {
+      aspectRatio: false,
    },
 };

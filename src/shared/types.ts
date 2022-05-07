@@ -18,9 +18,37 @@ export interface ICategory {
    deleted_at: any;
    name: string;
    description: string;
+   children?: Array<IChildCategory>;
 }
 
-export interface IProduct {}
+export interface IChildCategory {
+   created_at: string;
+   description: string;
+   id: string;
+   name: string;
+   parent_id: string;
+   updated_at: string;
+}
+
+export interface IProduct {
+   name: string;
+   description: string;
+   price: number;
+   quantity: number;
+   stock: number;
+   images: Array<string>;
+   categories_id: Array<string>;
+   [key: string]: any;
+   metadata: {
+      [key: string]: Array<{
+         name: string;
+         value: string;
+      }>;
+   };
+   specific: {
+      [key: string]: any;
+   };
+}
 
 export interface IToken {
    access_token: string;

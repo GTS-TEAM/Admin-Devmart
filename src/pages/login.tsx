@@ -1,5 +1,5 @@
 import { Button, message, Typography } from 'antd';
-import BannerAuth from 'components/common/BannerAuth';
+import { BannerAuth } from 'components';
 import { ROUTES } from 'constant';
 import { InputCustom } from 'custom';
 import { NextPageContext } from 'next';
@@ -87,14 +87,10 @@ const Login: React.FC = () => {
                                        setIsLoading(false);
                                        message.error(res.error);
                                        return;
-                                    } else {
-                                       setIsLoading(false);
-                                       message.success(
-                                          'Login successfully',
-                                          10000
-                                       );
-                                       router.push(ROUTES.HOME);
                                     }
+                                    setIsLoading(false);
+                                    router.push(ROUTES.HOME);
+                                    message.success('Login successfully');
                                  }}
                                  loading={isLoading}
                                  disabled={

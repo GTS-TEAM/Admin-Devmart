@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, message, Typography } from 'antd';
 import axios from 'axios';
-import BannerAuth from 'components/common/BannerAuth';
+import { BannerAuth } from 'components';
 import { BASE_URL_API, ROUTES } from 'constant';
 import { InputCustom } from 'custom';
 import { NextPageContext } from 'next';

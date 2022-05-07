@@ -1,12 +1,12 @@
 import React from 'react';
-import ShapeLogin from '../../../../public/shapeLogin.svg';
+import ShapeLogin from '../../../public/images/shapeLogin.svg';
 
 const BannerAuth = () => {
    return (
       <div
          className="absolute top-0 left-0 right-0 w-full h-[380px] bg-center bg-cover"
          style={{
-            backgroundImage: `url('images/auth-one-bg.jpg')`,
+            backgroundImage: `url('/public/images/auth-one-bg.jpg')`,
          }}
       >
          <div className="bg-gradient-to-r from-[#364574] to-[#405189] opacity-90 z-0 absolute inset-0 " />

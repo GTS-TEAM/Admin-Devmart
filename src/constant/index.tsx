@@ -16,7 +16,7 @@ export const ROUTES = {
    SIGN_UP: '/signup',
    HOME: '/',
    PRODUCTS: '/products',
-   ADD_PRODUCT: '/add-product',
+   ADD_PRODUCT: '/products/add-product',
    ORDERS: '/orders',
    CUSTOMERS: '/customer',
    CATEGORIES: '/categories',
@@ -63,3 +63,5 @@ export const TYPE_VARIANTS = {
    VISIBLE: 'visible',
    EXIT: 'exit',
 };
+
+export const SECOND = 1000;

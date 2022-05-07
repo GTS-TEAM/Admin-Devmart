@@ -19,29 +19,6 @@
 
    //checkbox
 
-   .ant-checkbox {
-      &:hover::after {
-         @apply border-vz-primary;
-      }
-
-      &.ant-checkbox-checked .ant-checkbox-inner {
-         @apply bg-vz-primary border-vz-primary;
-      }
-
-      &.ant-checkbox-checked::after {
-         @apply border-vz-primary;
-      }
-
-      &-inner {
-         @apply border-vz-border-color #{!important};
-         @apply bg-transparent;
-
-         &::after {
-            @apply bg-vz-primary;
-         }
-      }
-   }
-
    // table
    .ant-table {
       background-color: transparent;

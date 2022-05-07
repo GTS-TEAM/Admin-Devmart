@@ -1,26 +1,55 @@
 import axiosClient from 'lib/axiosClient';
-import { ICategory, IResData } from 'shared/types';
+import { ICategory, IChildCategory, IResData } from 'shared/types';
 
 export const eCommerceApis = {
    getAllCategories: (url: string) => {
-      return axiosClient.get<IResData<ICategory[]>>(url);
+      return axiosClient.get<
+         IResData<{
+            categories: ICategory[];
+            children: null | any;
+            total: number;
+         }>
+      >(url);
    },
    addCategory: (data: { name: string; description: string }) => {
       return axiosClient.post<IResData<ICategory>>('/category', data);
    },
-   getAllProducts: (url: string) => {
-      return axiosClient.get<any[]>(url, {
+   addChildCategory: (data: {
+      name: string;
+      description: string;
+      parent_id: string;
+   }) => {
+      return axiosClient.post<IResData<IChildCategory>>('/category', data);
+   },
+   getAllProducts: (
+      url: string,
+      page?: number,
+      limit?: number,
+      sort?: string
+   ) => {
+      return axiosClient.get<IResData<any>>(url, {
          params: {
-            page: 1,
-            limit: 10,
+            page,
+            limit,
+            sort,
          },
       });
    },
+   addProduct: () => {},
 };
 
 export const fetcher = {
    getAllCategories: (url: string) =>
-      eCommerceApis.getAllCategories(url).then((res) => res.data),
-   getAllProducts: (url: string) =>
-      eCommerceApis.getAllProducts(url).then((res) => res.data),
+      eCommerceApis
+         .getAllCategories(url)
+         .then((res) => res.data.data.categories),
+   getAllProducts: (
+      url: string,
+      page?: number,
+      limit?: number,
+      sort?: string
+   ) =>
+      eCommerceApis
+         .getAllProducts(url, page, limit, sort)
+         .then((res) => res.data.data),
 };

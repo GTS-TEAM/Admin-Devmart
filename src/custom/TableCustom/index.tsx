@@ -1,7 +1,11 @@
 import { ConfigProvider, Table, TableProps } from 'antd';
 import React, { useRef } from 'react';
 
-export const TableCustom: React.FC<TableProps<any>> = (props) => {
+interface Props<T> extends TableProps<T> {
+   total?: number;
+}
+
+export const TableCustom: React.FC<Props<any>> = (props) => {
    const ref = useRef(null);
 
    React.useEffect(() => {
@@ -33,7 +37,6 @@ export const TableCustom: React.FC<TableProps<any>> = (props) => {
          }}
       >
          <Table
-            {...props}
             className={`vzTableCustom ${props.className || ''} `}
             pagination={{
                className: `vz-pagination-table flex flex-wrap ${
@@ -41,7 +44,7 @@ export const TableCustom: React.FC<TableProps<any>> = (props) => {
                      ? 'hidden'
                      : ''
                }`,
-               total: 85,
+               total: props.total,
                showTotal: (total, range) => (
                   <p className="text-[#878a99] flex-shrink-0">{`Show ${range[0]} to ${range[1]} of ${total} results `}</p>
                ),
@@ -63,6 +66,7 @@ export const TableCustom: React.FC<TableProps<any>> = (props) => {
                   return originalElement;
                },
             }}
+            {...props}
          />
       </ConfigProvider>
    );

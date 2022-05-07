@@ -15,6 +15,8 @@ interface Props {
    customHeader?: JSX.Element | React.ReactNode;
    customFooter?: JSX.Element | React.ReactNode;
    width?: string | number;
+   textOk?: string;
+   textCancel?: string;
 }
 
 const ModalWrap: React.FC<Props> = (props) => {
@@ -56,7 +58,7 @@ const ModalWrap: React.FC<Props> = (props) => {
                      </button>
                   </div>
                </div>
-               <div>{props.children}</div>
+               <div className="p-4">{props.children}</div>
                <div className="p-4">
                   <div className="flex items-center justify-end">
                      <Button
@@ -64,14 +66,14 @@ const ModalWrap: React.FC<Props> = (props) => {
                         className="vz-button vz-button-light mr-4"
                         onClick={props.handleCancel}
                      >
-                        Cancel
+                        {props.textCancel || 'Cancel'}
                      </Button>
                      <Button
                         {...props.propsButtonOk}
                         className="vz-button-second vz-button"
                         onClick={props.handleOk}
                      >
-                        Ok
+                        {props.textOk || 'Ok'}
                      </Button>
                   </div>
                </div>

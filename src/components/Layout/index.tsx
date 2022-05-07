@@ -1,7 +1,7 @@
+import Header from 'components/Header';
+import Sidebar from 'components/Sidebar';
 import { useBodyOverflow, useObservationSize } from 'hooks';
 import React, { useState } from 'react';
-import Header from '../Header';
-import Sidebar from '../Sidebar';
 
 const Layout: React.FC<{
    children?: React.ReactNode;
@@ -64,7 +64,7 @@ const Layout: React.FC<{
                      : undefined,
             }}
          >
-            <div className="p-4">{children}</div>
+            <div className="p-4 h-full">{children}</div>
          </main>
       </div>
    );

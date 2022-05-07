@@ -1,38 +1,33 @@
-import { Button, message } from 'antd';
+import { Button, message, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { eCommerceApis, fetcher } from 'apis';
-import { Auth, HeaderBreadcrumb, Layout, requireAuth } from 'components/common';
-import ModalWrap from 'components/Modal/ModalWrap';
+import {
+   Auth,
+   HeaderBreadcrumb,
+   Layout,
+   ModalAddCategory,
+   requireAuth,
+} from 'components';
 import { ROUTES } from 'constant';
 import { InputCustom, TableCustom } from 'custom';
 import { AnimatePresence } from 'framer-motion';
 import { GetServerSideProps } from 'next';
 import React, { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { BsThreeDots } from 'react-icons/bs';
-import { ICategory, WithLayout } from 'shared/types';
+import { ICategory, IChildCategory, WithLayout } from 'shared/types';
 import useSWR from 'swr';
 
-const rowSelection = {
-   onChange: (selectedRowKeys: React.Key[], selectedRows: ICategory[]) => {
-      console.log(
-         `selectedRowKeys: ${selectedRowKeys}`,
-         'selectedRows: ',
-         selectedRows
-      );
-   },
-   getCheckboxProps: (record: ICategory) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-   }),
-};
-
 const Categories: WithLayout = () => {
-   const { data, mutate } = useSWR('/category', fetcher.getAllCategories);
+   const { data: categories, mutate } = useSWR(
+      '/category',
+      fetcher.getAllCategories
+   );
    const [isShowModal, setIsShowModal] = useState<boolean>(false);
-   const [nameCategory, setNameCategory] = useState<string>('');
-   const [desc, setDesc] = useState<string>('');
-   const [loading, setLoading] = useState<boolean>(false);
+   const [isShowModalAddChild, setIsShowModalAddChild] =
+      useState<boolean>(false);
+   const [idParentCategory, setIdParentCategory] = useState<string | null>(
+      null
+   );
 
    const columns: ColumnsType<ICategory> = [
       {
@@ -46,45 +41,87 @@ const Categories: WithLayout = () => {
          dataIndex: 'description',
       },
       {
-         title: 'Actions',
-         key: 'actions',
-         dataIndex: 'actions',
-         render: () => {
+         title: 'Children category',
+         key: 'children-category',
+         dataIndex: 'children-category',
+         render: (_, record) => {
+            return record.children?.map((_child) => {
+               return (
+                  <Tag color="success" key={_child.id}>
+                     {_child.name}
+                  </Tag>
+               );
+            });
+         },
+      },
+      {
+         title: 'Action',
+         key: 'action',
+         dataIndex: 'action',
+         render: (_, record) => {
             return (
-               <Button>
-                  <BsThreeDots />
+               <Button
+                  className="vz-button vz-button-primary"
+                  onClick={() => {
+                     setIdParentCategory(record.id);
+                     setIsShowModalAddChild(true);
+                  }}
+               >
+                  Add child category
                </Button>
             );
          },
       },
    ];
 
-   const handleCloseModal = () => {
-      setIsShowModal(false);
-      setNameCategory('');
-      setDesc('');
-   };
-
-   const handleAddCategory = async () => {
+   const handleAddCategory = async (name: string, desc: string) => {
       try {
-         setLoading(true);
          const {
             data: { data: newCategory, message: msg },
          } = await eCommerceApis.addCategory({
-            name: nameCategory,
+            name: name,
             description: desc,
          });
-         if (data) {
-            mutate({
-               message: data?.message as string,
-               data: [...(data?.data as ICategory[]), newCategory],
-            });
+         if (categories) {
+            mutate([...categories, newCategory]);
          }
-         setLoading(false);
          message.success(msg);
-         handleCloseModal();
       } catch (error) {
          message.error('Something went wrong');
+      }
+   };
+
+   const handleAddChildCategory = async (name: string, desc: string) => {
+      if (idParentCategory) {
+         try {
+            const {
+               data: { data: newChildCategory, message: msg },
+            } = await eCommerceApis.addChildCategory({
+               name: name,
+               description: desc,
+               parent_id: idParentCategory,
+            });
+
+            if (categories) {
+               mutate(
+                  categories.map((category) => {
+                     if (category.id === newChildCategory.parent_id) {
+                        return {
+                           ...category,
+                           children: [
+                              ...(category.children as IChildCategory[]),
+                              newChildCategory,
+                           ],
+                        };
+                     }
+                     return category;
+                  })
+               );
+            }
+            message.success(msg);
+         } catch (error) {
+            message.error('Something went wrong');
+         }
       }
    };
 
@@ -120,52 +157,34 @@ const Categories: WithLayout = () => {
                   </div>
                </div>
                <TableCustom
-                  loading={!data}
-                  dataSource={data?.data as ICategory[]}
+                  loading={!categories}
+                  dataSource={(categories as ICategory[]) || []}
                   rowKey="id"
                   columns={columns}
-                  rowSelection={{
-                     type: 'checkbox',
-                     ...rowSelection,
+                  pagination={false}
+                  expandable={{
+                     childrenColumnName: 'none',
                   }}
                />
             </div>
          </div>
          <AnimatePresence>
             {isShowModal && (
-               <ModalWrap
-                  title="Add categories"
-                  handleCancel={handleCloseModal}
-                  propsButtonOk={{
-                     disabled:
-                        nameCategory.trim().length === 0 ||
-                        desc.trim().length === 0,
-                     loading: loading,
+               <ModalAddCategory
+                  handleAdd={handleAddCategory}
+                  handleClose={() => {
+                     setIsShowModal(false);
                   }}
-                  handleOk={handleAddCategory}
-               >
-                  <div className="p-4 flex flex-col">
-                     <InputCustom
-                        className="mb-4"
-                        placeholder="Enter name category"
-                        label="Name"
-                        onChange={(e) => {
-                           setNameCategory(e.target.value);
-                        }}
-                     />
-                     <InputCustom
-                        label="Description"
-                        isTextArea={true}
-                        propsTextArea={{
-                           placeholder: 'Enter description category',
-                           onChange: (e) => {
-                              setDesc(e.target.value);
-                           },
-                        }}
-                        className="resize-none !min-h-[120px]"
-                     />
-                  </div>
-               </ModalWrap>
+               />
+            )}
+            {isShowModalAddChild && (
+               <ModalAddCategory
+                  handleAdd={handleAddChildCategory}
+                  handleClose={() => {
+                     setIsShowModalAddChild(false);
+                     setIdParentCategory(null);
+                  }}
+               />
             )}
          </AnimatePresence>
       </div>
