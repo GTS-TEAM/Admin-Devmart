@@ -1,0 +1,67 @@
+.vz-select {
+   @apply rounded text-vz-text-color-body bg-vz-input-bg;
+   border: unset;
+
+   &:not(.ant-select-disabled):hover .ant-select-selector {
+      @apply border-vz-input-focus-border border border-solid;
+      min-height: 37.5px;
+   }
+
+   &:not(.ant-select-customize-input) .ant-select-selector {
+      background-color: transparent;
+      @apply border border-solid border-vz-input-border rounded;
+      min-height: 37.5px;
+   }
+
+   &.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+      .ant-select-selector {
+      @apply border-vz-input-focus-border;
+      box-shadow: unset;
+      outline: none;
+   }
+   .ant-select-selection-item {
+      @apply flex items-center bg-vz-body-color border-vz-border-color rounded px-2 py-2;
+   }
+
+   .ant-select-selection-item-remove {
+      @apply flex items-center justify-center text-vz-text-color-body hover:text-vz-text-color-body;
+   }
+}
+
+.vz-dropdown {
+   @apply rounded bg-vz-card-bg;
+
+   .ant-select-tree {
+      @apply rounded bg-vz-card-bg;
+   }
+
+   .ant-select-tree-checkbox-inner {
+      @apply border-vz-border-color bg-transparent;
+   }
+
+   .ant-select-tree-checkbox-wrapper:hover .ant-select-tree-checkbox-inner,
+   .ant-select-tree-checkbox:hover .ant-select-tree-checkbox-inner,
+   .ant-select-tree-checkbox-input:focus + .ant-select-tree-checkbox-inner {
+      @apply border-vz-border-color;
+   }
+
+   .ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner {
+      @apply bg-vz-primary border-vz-primary;
+
+      &:hover::after {
+         @apply border-vz-primary;
+      }
+   }
+
+   .ant-select-tree-checkbox-inner::after {
+      @apply bg-vz-primary;
+   }
+
+   .ant-select-tree .ant-select-tree-node-content-wrapper:hover {
+      background-color: var(--vz-dropdown-link-hover-bg);
+   }
+
+   .ant-select-tree-title {
+      @apply text-vz-text-color-body;
+   }
+}

@@ -1,0 +1,18 @@
+.card {
+   @apply relative flex rounded bg-vz-card-bg;
+   border: 0 solid rgba(0, 0, 0, 0.125);
+
+   &-header {
+      @apply p-4 rounded-t;
+      border-bottom: 1px solid var(--vz-border-color);
+      background-color: var(--vz-card-cap-bg);
+   }
+
+   &-title {
+      @apply text-base font-medium;
+   }
+
+   &-body {
+      @apply p-4;
+   }
+}

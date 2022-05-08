@@ -1,0 +1,89 @@
+.ant-checkbox {
+   &:hover::after {
+      @apply border-vz-primary;
+   }
+
+   &.ant-checkbox-checked .ant-checkbox-inner {
+      @apply bg-vz-primary border-vz-primary;
+   }
+
+   &.ant-checkbox-checked::after {
+      @apply border-vz-primary;
+   }
+
+   &-inner {
+      @apply border-vz-border-color #{!important};
+      @apply bg-transparent;
+
+      &::after {
+         @apply bg-vz-primary;
+      }
+   }
+}
+
+.ant-tree-list {
+   @apply bg-vz-card-bg;
+
+   .ant-tree-checkbox-inner {
+      @apply border-vz-border-color;
+   }
+
+   .ant-tree-checkbox-wrapper:hover .ant-tree-checkbox-inner,
+   .ant-tree-checkbox:hover .ant-tree-checkbox-inner,
+   .ant-tree-checkbox-input:focus + .ant-tree-checkbox-inner {
+      @apply border-vz-border-color;
+   }
+
+   .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
+      @apply bg-vz-primary border-vz-primary;
+
+      &:hover::after {
+         @apply border-vz-primary;
+      }
+   }
+
+   .ant-tree-checkbox-inner::after {
+      @apply bg-vz-primary;
+   }
+
+   .ant-tree-node-content-wrapper {
+      width: 100%;
+   }
+
+   .ant-tree-node-content-wrapper:hover {
+      background-color: var(--vz-dropdown-link-hover-bg);
+      width: 100%;
+   }
+
+   .ant-tree-treenode {
+      @apply w-full;
+   }
+
+   .ant-tree-switcher.ant-tree-switcher_close,
+   .ant-tree-switcher.ant-tree-switcher_open,
+   .ant-tree-switcher.ant-tree-switcher-noop {
+      order: 3;
+      color: var(--vz-body-color);
+
+      svg {
+         width: 1rem;
+         height: 1rem;
+      }
+   }
+
+   .ant-tree-node-content-wrapper.ant-tree-node-selected {
+      background-color: var(--vz-dropdown-link-hover-bg);
+   }
+
+   .ant-tree-checkbox-inner {
+      background-color: transparent;
+   }
+
+   .ant-tree-title {
+      @apply text-vz-text-color-body;
+   }
+
+   .ant-tree-checkbox-checked::after {
+      @apply border-vz-primary;
+   }
+}

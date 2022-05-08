@@ -1,0 +1,273 @@
+@use '~tailwindcss/base';
+@use '~tailwindcss/components';
+@use '~tailwindcss/utilities';
+@use './nprogress';
+@use './customtable';
+@use './button';
+@use './card';
+@use './input';
+@use './text';
+@use './add-products';
+@use './tree_select';
+@use './checkbox';
+
+@layer base {
+   :root {
+      --vz-blue: #3577f1;
+      --vz-indigo: #405189;
+      --vz-purple: #6559cc;
+      --vz-pink: #f672a7;
+      --vz-red: #f06548;
+      --vz-orange: #f1963b;
+      --vz-yellow: #f7b84b;
+      --vz-green: #0ab39c;
+      --vz-teal: #02a8b5;
+      --vz-cyan: #299cdb;
+      --vz-white: #fff;
+      --vz-gray: #878a99;
+      --vz-gray-dark: #343a40;
+      --vz-gray-100: #f3f6f9;
+      --vz-gray-200: #eff2f7;
+      --vz-gray-300: #e9ebec;
+      --vz-gray-400: #ced4da;
+      --vz-gray-500: #adb5bd;
+      --vz-gray-600: #878a99;
+      --vz-gray-700: #495057;
+      --vz-gray-800: #343a40;
+      --vz-gray-900: #212529;
+      --vz-primary: #405189;
+      --vz-secondary: #3577f1;
+      --vz-success: #0ab39c;
+      --vz-info: #299cdb;
+      --vz-warning: #f7b84b;
+      --vz-danger: #f06548;
+      --vz-light: #f3f6f9;
+      --vz-dark: #212529;
+      --vz-primary-rgb: 64, 81, 137;
+      --vz-secondary-rgb: 53, 119, 241;
+      --vz-success-rgb: 10, 179, 156;
+      --vz-info-rgb: 41, 156, 219;
+      --vz-warning-rgb: 247, 184, 75;
+      --vz-danger-rgb: 240, 101, 72;
+      --vz-light-rgb: 243, 246, 249;
+      --vz-dark-rgb: 33, 37, 41;
+      --vz-white-rgb: 255, 255, 255;
+      --vz-black-rgb: 0, 0, 0;
+      --vz-body-color-rgb: 33, 37, 41;
+      --vz-body-bg-rgb: 243, 243, 249;
+      --vz-font-sans-serif: 'Poppins', sans-serif;
+      --vz-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+         'Liberation Mono', 'Courier New', monospace;
+      --vz-gradient: linear-gradient(
+         180deg,
+         rgba(255, 255, 255, 0.15),
+         rgba(255, 255, 255, 0)
+      );
+      --vz-body-font-family: var(--vz-font-sans-serif);
+      --vz-body-font-size: 0.8125rem;
+      --vz-body-font-weight: 400;
+      --vz-body-line-height: 1.5;
+      --vz-body-color: #212529;
+      --vz-body-bg: #f3f3f9;
+      --vz-body-color-rgb: 33, 37, 41;
+      --vz-vertical-menu-bg: #fff;
+      --vz-vertical-menu-item-color: #6d7080;
+      --vz-vertical-menu-item-hover-color: #405189;
+      --vz-vertical-menu-item-active-color: #405189;
+      --vz-vertical-menu-sub-item-color: #7c7f90;
+      --vz-vertical-menu-sub-item-hover-color: #405189;
+      --vz-vertical-menu-sub-item-active-color: #405189;
+      --vz-vertical-menu-title-color: #919da9;
+      --vz-vertical-menu-bg-dark: #405189;
+      --vz-vertical-menu-item-color-dark: #abb9e8;
+      --vz-vertical-menu-item-hover-color-dark: #fff;
+      --vz-vertical-menu-item-active-color-dark: #fff;
+      --vz-vertical-menu-sub-item-color-dark: #abb9e8;
+      --vz-vertical-menu-sub-item-hover-color-dark: #fff;
+      --vz-vertical-menu-sub-item-active-color-dark: #fff;
+      --vz-vertical-menu-title-color-dark: #838fb9;
+      --vz-header-bg: #fff;
+      --vz-header-item-color: #e9ecef;
+      --vz-header-bg-dark: #405189;
+      --vz-header-item-color-dark: #b0c4d9;
+      --vz-topbar-search-bg: #f3f3f9;
+      --vz-topbar-user-bg: #f3f3f9;
+      --vz-topbar-user-bg-dark: #52639c;
+      --vz-footer-bg: #fff;
+      --vz-footer-color: #98a6ad;
+      --vz-topnav-bg: #fff;
+      --vz-topnav-item-color: #6d7080;
+      --vz-topnav-item-color-active: #405189;
+      --vz-twocolumn-menu-iconview-bg: #fff;
+      --vz-twocolumn-menu-bg: #fff;
+      --vz-twocolumn-menu-iconview-bg-dark: var(--vz-vertical-menu-bg-dark);
+      --vz-twocolumn-menu-bg-dark: #435590;
+      --vz-twocolumn-menu-item-color-dark: var(
+         --vz-vertical-menu-item-color-dark
+      );
+      --vz-twocolumn-menu-item-active-color-dark: #fff;
+      --vz-twocolumn-menu-item-active-bg-dark: rgba(255, 255, 255, 0.15);
+      --vz-boxed-body-bg: #e5e5f2;
+      --vz-heading-color: #495057;
+      --vz-light: #f3f6f9;
+      --vz-light-rgb: 243, 246, 249;
+      --vz-dark: #212529;
+      --vz-dark-rgb: 33, 37, 41;
+      --vz-link-color: #405189;
+      --vz-link-hover-color: #405189;
+      --vz-border-color: #e9ebec;
+      --vz-dropdown-bg: #fff;
+      --vz-dropdown-link-color: #212529;
+      --vz-dropdown-link-hover-color: #1e2125;
+      --vz-dropdown-link-hover-bg: #f3f6f9;
+      --vz-dropdown-border-width: 0px;
+      --vz-card-bg: #fff;
+      --vz-card-cap-bg: #fff;
+      --vz-card-logo-dark: block;
+      --vz-card-logo-light: none;
+      --vz-modal-bg: #fff;
+      --vz-nav-tabs-link-active-color: #495057;
+      --vz-nav-tabs-link-active-bg: #f3f3f9;
+      --vz-accordion-button-active-color: #3a497b;
+      --vz-progress-bg: #eff2f7;
+      --vz-toast-background-color: rgba(255, 255, 255, 0.85);
+      --vz-toast-border-color: rgba(0, 0, 0, 0.1);
+      --vz-toast-header-border-color: rgba(0, 0, 0, 0.05);
+      --vz-list-group-hover-bg: #f3f6f9;
+      --vz-popover-bg: #fff;
+      --vz-pagination-hover-bg: #eff2f7;
+      --vz-input-bg: #fff;
+      --vz-input-border: #ced4da;
+      --vz-input-focus-border: #a0a8c4;
+      --vz-input-disabled-bg: #eff2f7;
+      --vz-input-group-addon-bg: #eff2f7;
+      --vz-input-check-border: var(--vz-input-border);
+      --vz-width-sidebar: 250px;
+      --vz-height-header: 70px;
+   }
+
+   html {
+      font-family: 'Poppins', sans-serif;
+   }
+
+   body {
+      font-family: 'Poppins', sans-serif;
+      @apply bg-vz-body-color;
+      color: var(--vz-body-color);
+      font-size: var(--vz-body-font-size);
+   }
+
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   h6 {
+      color: var(--vz-heading-color);
+   }
+
+   [data-theme='dark'] {
+      --vz-gray-100: #1a1d21;
+      --vz-gray-200: #212529;
+      --vz-gray-300: #2a2f34;
+      --vz-gray-400: #878a99;
+      --vz-gray-500: #adb5bd;
+      --vz-gray-600: #bfc8e2;
+      --vz-gray-700: #ced4da;
+      --vz-gray-800: #eff2f7;
+      --vz-gray-900: #f3f6f9;
+      --vz-body-bg: #1a1d21;
+      --vz-body-color: #ced4da;
+      --vz-body-color-rgb: 206, 212, 218;
+      --vz-vertical-menu-bg: #fff;
+      --vz-vertical-menu-item-color: #5f6270;
+      --vz-vertical-menu-item-hover-color: #405189;
+      --vz-vertical-menu-item-active-color: #405189;
+      --vz-vertical-menu-sub-item-color: #686b7b;
+      --vz-vertical-menu-sub-item-hover-color: #405189;
+      --vz-vertical-menu-sub-item-active-color: #405189;
+      --vz-vertical-menu-title-color: #878a99;
+      --vz-vertical-menu-bg-dark: #212529;
+      --vz-vertical-menu-item-color-dark: #878a99;
+      --vz-vertical-menu-item-hover-color-dark: #fff;
+      --vz-vertical-menu-item-active-color-dark: #fff;
+      --vz-vertical-menu-sub-item-color-dark: #7c7f90;
+      --vz-vertical-menu-sub-item-hover-color-dark: #fff;
+      --vz-vertical-menu-sub-item-active-color-dark: #fff;
+      --vz-vertical-menu-title-color-dark: #5f6270;
+      --vz-header-bg: #292e32;
+      --vz-header-item-color: #e9ecef;
+      --vz-header-bg-dark: #405189;
+      --vz-header-item-color-dark: #b0c4d9;
+      --vz-topbar-search-bg: #202328;
+      --vz-topbar-user-bg: #31373c;
+      --vz-topbar-user-bg-dark: #52639c;
+      --vz-footer-bg: #212529;
+      --vz-footer-color: #878a99;
+      --vz-topnav-bg: #272b30;
+      --vz-topnav-item-color: #878a99;
+      --vz-topnav-item-color-active: #fff;
+      --vz-twocolumn-menu-iconview-bg: #fff;
+      --vz-twocolumn-menu-bg: #fff;
+      --vz-twocolumn-menu-iconview-bg-dark: var(--vz-vertical-menu-bg-dark);
+      --vz-twocolumn-menu-bg-dark: #30363a;
+      --vz-twocolumn-menu-item-color-dark: var(
+         --vz-vertical-menu-item-color-dark
+      );
+      --vz-twocolumn-menu-item-active-color-dark: #fff;
+      --vz-twocolumn-menu-item-active-bg-dark: rgba(255, 255, 255, 0.15);
+      --vz-boxed-body-bg: #111316;
+      --vz-heading-color: #ced4da;
+      --vz-light: #2a2f34;
+      --vz-light-rgb: 42, 47, 52;
+      --vz-dark: #eff2f7;
+      --vz-dark-rgb: 239, 242, 247;
+      --vz-link-color: #ced4da;
+      --vz-link-hover-color: #ced4da;
+      --vz-border-color: #32383e;
+      --vz-dropdown-bg: #292e33;
+      --vz-dropdown-link-color: #adb5bd;
+      --vz-dropdown-link-hover-color: #b9bfc4;
+      --vz-dropdown-link-hover-bg: #2f343a;
+      --vz-dropdown-border-width: 1px;
+      --vz-card-bg: #212529;
+      --vz-card-cap-bg: #212529;
+      --vz-card-logo-dark: none;
+      --vz-card-logo-light: block;
+      --vz-modal-bg: #212529;
+      --vz-nav-tabs-link-active-color: #f3f6f9;
+      --vz-nav-tabs-link-active-bg: #2a2f34;
+      --vz-accordion-button-active-color: #fff;
+      --vz-progress-bg: #2a2f34;
+      --vz-toast-background-color: rgba(42, 47, 52, 0.85);
+      --vz-toast-border-color: rgba(255, 255, 255, 0.1);
+      --vz-toast-header-border-color: rgba(255, 255, 255, 0.05);
+      --vz-list-group-hover-bg: #272b30;
+      --vz-popover-bg: #23282c;
+      --vz-pagination-hover-bg: #2a2f34;
+      --vz-input-bg: #262a2f;
+      --vz-input-border: #2a2f34;
+      --vz-input-focus-border: #33393f;
+      --vz-input-disabled-bg: #212529;
+      --vz-input-group-addon-bg: #2a2f34;
+      --vz-input-check-border: #33393f;
+   }
+}
+
+[ant-click-animating-without-extra-node='true']::after {
+   display: none;
+}
+
+.ant-message-custom-content {
+   @apply flex items-center justify-center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+input[type='number'] {
+   -moz-appearance: textfield;
+}
