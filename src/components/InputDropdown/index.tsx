@@ -4,6 +4,8 @@ import { useOnClickOutside } from 'hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { moveUpDropdown } from 'utils';
+
+console.log('hi');
 interface Props {
    listValues: {
       name: string;
