@@ -1,15 +1,9 @@
 @use '~tailwindcss/base';
 @use '~tailwindcss/components';
 @use '~tailwindcss/utilities';
-@use './nprogress';
-@use './customtable';
-@use './button';
-@use './card';
-@use './input';
-@use './text';
-@use './add-products';
-@use './tree_select';
-@use './checkbox';
+
+@use './components' as *;
+@use './pages';
 
 @layer base {
    :root {

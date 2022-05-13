@@ -40,6 +40,12 @@ const SpecificForm: React.FC<Props> = ({ onChange }) => {
    useEffect(() => {
       const _specific: { [key: string]: string } = specifics.reduce(
          (prev, current) => {
+            if (
+               current.name.trim().length === 0 &&
+               current.value.trim().length === 0
+            ) {
+               return {};
+            }
             return {
                ...prev,
                [current.name]: current.value,

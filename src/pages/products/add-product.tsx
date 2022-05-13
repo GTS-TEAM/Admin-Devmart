@@ -1,4 +1,4 @@
-import { Col, Row, TreeSelect, Upload } from 'antd';
+import { Button, Col, message, Row, TreeSelect, Upload } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { eCommerceApis } from 'apis';
 import { Auth, Card, HeaderBreadcrumb, Layout, requireAuth } from 'components';
@@ -6,7 +6,7 @@ import SpecificForm from 'components/SpecificForm';
 import { ROUTES } from 'constant';
 import { InputCustom } from 'custom';
 import { GetServerSideProps } from 'next';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { ICategory, WithLayout } from 'shared/types';
 
@@ -29,27 +29,71 @@ interface Props {
 }
 
 const AddProduct: WithLayout = ({ categories }: Props) => {
-   const editorRef = useRef<any>();
-   const { CKEditor, ClassicEditor } = editorRef.current || {};
-   const [editorLoaded, setEditorLoaded] = useState(false);
-   const inputImageProductRef = useRef<HTMLInputElement | null>(null);
-   const [imageProduct, setImageProduct] = useState<File | null>(null);
    const [imagesLibrary, setImagesLibrary] = useState<UploadFile[]>([]);
-   const [category, setCategory] = useState<string>('');
+   const [categoriesId, setCategoriesId] = useState<{ [key: string]: any }>({});
    const [description, setDescription] = useState<string>('');
    const [price, setPrice] = useState<number>(1000);
    const [specific, setSpecific] = useState<{
       [key: string]: string;
    }>({});
+   const [name, setName] = useState<string>('');
+   const [loading, setLoading] = useState<boolean>(false);
 
-   useEffect(() => {
-      //fix window not define when use ckeditor
-      editorRef.current = {
-         CKEditor: require('@ckeditor/ckeditor5-react').CKEditor, // v3+
-         ClassicEditor: require('@ckeditor/ckeditor5-build-classic'),
-      };
-      setEditorLoaded(true);
-   }, []);
+   const handleReset = () => {
+      setImagesLibrary([]);
+      setCategoriesId({});
+      setDescription('');
+      setPrice(1000);
+      setSpecific({});
+      setName('');
+   };
+
+   const handleAddProduct = async () => {
+      try {
+         setLoading(true);
+         if (
+            imagesLibrary.length === 0 ||
+            name.trim().length === 0 ||
+            Object.keys(categoriesId).length === 0 ||
+            description.trim().length === 0
+         ) {
+            throw new Error('Maybe you miss field is required. Try again!');
+         }
+
+         const newProduct = {
+            name,
+            description,
+            price,
+            specific,
+            images: [
+               'https://cf.shopee.vn/file/2e4a7052dfa97c2e485f27cee2633746',
+               'https://cf.shopee.vn/file/60e9b11ed933389e38136ed2422142d4',
+            ],
+            categories_id: categoriesId,
+            variants: [
+               {
+                  key: 'Style',
+                  values: ['Black', 'White'],
+               },
+               {
+                  key: 'Size',
+                  values: ['S', 'M', 'L'],
+               },
+            ],
+         };
+
+         const {
+            data: { data: productAdded, message: _message },
+         } = await eCommerceApis.addProduct(newProduct);
+
+         message.success(_message);
+         setLoading(false);
+         handleReset();
+      } catch (error: any) {
+         message.error(error.message);
+         setLoading(false);
+      }
+   };
 
    return (
       <div className="flex flex-col h-full">
@@ -63,21 +107,27 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                            placeholder="Enter product title"
                            label="Product title"
                            isRequire={true}
+                           value={name}
+                           onChange={(e) => {
+                              setName(e.target.value);
+                           }}
                         />
                         <div>
-                           <label className="vz-add-product-label">
-                              Product Description
-                           </label>
-                           {editorLoaded && (
-                              <CKEditor
-                                 editor={ClassicEditor}
-                                 data={description}
-                                 onChange={(event: any, editor: any) => {
-                                    const data = editor.getData();
-                                    setDescription(data);
-                                 }}
-                              />
-                           )}
+                           <InputCustom
+                              isTextArea
+                              isRequire
+                              label="Product Description"
+                              onChange={(e) => {
+                                 console.log(e.target.value);
+                                 setDescription(e.target.value);
+                              }}
+                              propsTextArea={{
+                                 onChange: (e) => {
+                                    setDescription(e.target.value);
+                                 },
+                                 value: description,
+                              }}
+                           />
                         </div>
                      </div>
                   </Card>
@@ -96,48 +146,10 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                   </Card>
                   <Card title="Product Gallery">
                      <div className="flex flex-col gap-4">
-                        <div>
-                           <label className="vz-add-product-label">
-                              Product Image
-                           </label>
-                           <span className="text-muted mb-4 block">
-                              Add Product main Image.
-                           </span>
-                           <div
-                              className="h-[37.5px] flex items-center "
-                              onClick={() => {
-                                 inputImageProductRef.current?.click();
-                              }}
-                           >
-                              <div className="flex items-center h-full w-full  border-vz-input-border border border-solid cursor-pointer rounded">
-                                 <button className="bg-vz-light h-full px-4 py-2 border-r border-inherit">
-                                    Choose file
-                                 </button>
-                                 <div className="px-4 py-2">
-                                    {imageProduct
-                                       ? imageProduct.name
-                                       : 'No file choose'}
-                                 </div>
-                                 <input
-                                    type="file"
-                                    accept="image/png, image/jpeg"
-                                    className="hidden"
-                                    ref={inputImageProductRef}
-                                    onChange={(e) => {
-                                       const file = e.target.files?.[0];
-                                       if (file) {
-                                          setImageProduct(file);
-                                       } else {
-                                          setImageProduct(null);
-                                       }
-                                    }}
-                                 />
-                              </div>
-                           </div>
-                        </div>
                         <div className="vz-gallery">
                            <label className="vz-add-product-label">
                               Product Gallery
+                              <span className="text-red-600 ml-1">*</span>
                            </label>
                            <span className="text-muted mb-4 block">
                               Add Product Gallery Images.
@@ -163,14 +175,26 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                         </div>
                      </div>
                   </Card>
+                  <Card title="Product variants"></Card>
                   <SpecificForm
                      onChange={(specific) => {
                         setSpecific(specific);
                      }}
                   />
+                  <Button
+                     className="vz-button vz-button-primary self-end"
+                     onClick={handleAddProduct}
+                     loading={loading}
+                  >
+                     Submit
+                  </Button>
                </Col>
                <Col span={8} className="flex flex-col gap-4">
                   <Card title="Product Categories">
+                     <label className="vz-add-product-label">
+                        Choose categories
+                        <span className="text-red-600 ml-1">*</span>
+                     </label>
                      <p className="text-muted mb-2">Select product category</p>
                      <TreeSelect
                         className="w-full vz-select"
@@ -180,7 +204,7 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                         placeholder="Choose categories"
                         dropdownClassName="vz-dropdown"
                         onChange={(values) => {
-                           console.log(values);
+                           setCategoriesId(values);
                         }}
                      />
                   </Card>
@@ -192,9 +216,6 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                   </Card>
                </Col>
             </Row>
-            <div>
-               <div className="w-[66.66666667%]"></div>
-            </div>
          </div>
       </div>
    );
@@ -213,7 +234,7 @@ export default AddProduct;
 export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
    const _categories = await (
       await eCommerceApis.getAllCategories('/category')
-   ).data.data.categories;
+   ).data.data;
 
    const treeData = _categories.map((_category) => {
       return {
@@ -231,8 +252,6 @@ export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
             : [],
       };
    });
-
-   console.log(treeData);
 
    return {
       props: {

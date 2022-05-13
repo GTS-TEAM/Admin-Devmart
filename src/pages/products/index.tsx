@@ -1,4 +1,4 @@
-import { Button, Col, Row, Slider, Tree } from 'antd';
+import { Button, Col, message, Row, Tree } from 'antd';
 import { fetcher } from 'apis';
 import { Auth, HeaderBreadcrumb, Layout, requireAuth } from 'components';
 import { ROUTES } from 'constant';
@@ -22,9 +22,9 @@ const Products: WithLayout = () => {
    );
    const { data: categories } = useSWR('/category', fetcher.getAllCategories);
    const [rangeInput, setRangeInput] = useState<{
-      start: number;
-      end: number;
-   }>({ start: 0, end: 99999999999 });
+      start: string;
+      end: string;
+   }>({ start: '', end: '' });
 
    const treeData = categories
       ? categories.map((_category) => {
@@ -82,27 +82,14 @@ const Products: WithLayout = () => {
                            PRICE
                         </span>
                         <div>
-                           <Slider
-                              range
-                              onChange={([start, end]) => {
-                                 setRangeInput({
-                                    start,
-                                    end,
-                                 });
-                              }}
-                              className="mb-4"
-                              min={0}
-                              value={[rangeInput.start, rangeInput.end]}
-                              max={999999999}
-                           />
-                           <div className="flex items-center gap-4">
+                           <div className="flex items-center space-x-4 mb-4">
                               <InputCustom
                                  placeholder="Start"
                                  type="number"
                                  onChange={(e) => {
                                     setRangeInput({
                                        ...rangeInput,
-                                       start: +e.target.value,
+                                       start: e.target.value,
                                     });
                                  }}
                                  value={rangeInput.start}
@@ -113,12 +100,25 @@ const Products: WithLayout = () => {
                                  onChange={(e) => {
                                     setRangeInput({
                                        ...rangeInput,
-                                       end: +e.target.value,
+                                       end: e.target.value,
                                     });
                                  }}
                                  value={rangeInput.end}
                               />
                            </div>
+                           <Button
+                              className="vz-button vz-button-primary w-full"
+                              onClick={() => {
+                                 if (+rangeInput.start >= +rangeInput.end) {
+                                    message.error(
+                                       'Please enter the appropriate price range'
+                                    );
+                                    return;
+                                 }
+                              }}
+                           >
+                              Apply
+                           </Button>
                         </div>
                      </div>
                   </div>
