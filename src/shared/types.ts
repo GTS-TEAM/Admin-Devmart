@@ -76,8 +76,10 @@ export type WithLayout = {
 export type MenuItem = Required<MenuProps>['items'][number];
 
 export interface IVariantInput {
+   id: string;
    key: string;
    values: Array<string>;
+   readonly?: boolean;
 }
 
 export interface ITagInput {

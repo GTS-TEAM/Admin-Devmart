@@ -4,9 +4,9 @@ import { eCommerceApis } from 'apis';
 import { Auth, Card, HeaderBreadcrumb, Layout } from 'components';
 import { ROUTES } from 'constant';
 import { InputCustom } from 'custom';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
-import { ICategory, WithLayout } from 'shared/types';
+import { ICategory, IVariantInput, WithLayout } from 'shared/types';
 import { SpecificForm, VariantInputs } from './components';
 
 const itemsHeaderBreadcrumb: Array<{ name: string; path?: string }> = [
@@ -37,19 +37,22 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
    }>({});
    const [name, setName] = useState<string>('');
    const [loading, setLoading] = useState<boolean>(false);
+   const [variants, setVariants] = useState<IVariantInput[]>([]);
 
-   const handleReset = () => {
+   const handleReset = useCallback(() => {
       setImagesLibrary([]);
       setCategoriesId({});
       setDescription('');
       setPrice(1000);
       setSpecific({});
       setName('');
-   };
+      setVariants([]);
+   }, []);
 
-   const handleAddProduct = async () => {
+   const handleAddProduct = useCallback(async () => {
       try {
          setLoading(true);
+
          if (
             imagesLibrary.length === 0 ||
             name.trim().length === 0 ||
@@ -59,26 +62,29 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
             throw new Error('Maybe you miss field is required. Try again!');
          }
 
+         const formData = new FormData();
+
+         for (const imgFile of imagesLibrary) {
+            formData.append('files', imgFile.originFileObj as Blob);
+         }
+
+         const {
+            data: { urls },
+         } = await eCommerceApis.uploadImages(formData);
+
          const newProduct = {
             name,
             description,
             price,
             specific,
-            images: [
-               'https://cf.shopee.vn/file/2e4a7052dfa97c2e485f27cee2633746',
-               'https://cf.shopee.vn/file/60e9b11ed933389e38136ed2422142d4',
-            ],
+            images: urls,
             categories_id: categoriesId,
-            variants: [
-               {
-                  key: 'Style',
-                  values: ['Black', 'White'],
-               },
-               {
-                  key: 'Size',
-                  values: ['S', 'M', 'L'],
-               },
-            ],
+            variants: variants.map((_variant) => {
+               return {
+                  key: _variant.key,
+                  values: _variant.values,
+               };
+            }),
          };
 
          const {
@@ -92,7 +98,16 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
          message.error(error.message);
          setLoading(false);
       }
-   };
+   }, [
+      categoriesId,
+      description,
+      name,
+      price,
+      specific,
+      variants,
+      imagesLibrary,
+      handleReset,
+   ]);
 
    return (
       <div className="flex flex-col h-full">
@@ -125,6 +140,7 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                                     setDescription(e.target.value);
                                  },
                                  value: description,
+                                 placeholder: 'Enter product description',
                               }}
                            />
                         </div>
@@ -174,7 +190,11 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                         </div>
                      </div>
                   </Card>
-                  <VariantInputs />
+                  <VariantInputs
+                     onVariantsChange={(variants) => {
+                        setVariants(variants);
+                     }}
+                  />
                   <SpecificForm
                      onChange={(specific) => {
                         setSpecific(specific);

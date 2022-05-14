@@ -1,101 +1,108 @@
-import { Button } from 'antd';
-import { Card, InputDropdown, InputTag } from 'components';
-import React, { useEffect, useState } from 'react';
+import { Button, message } from 'antd';
+import { Card, InputDropdown, InputTag, ModalWrap } from 'components';
+import { InputCustom } from 'custom';
+import { AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
-import { IVariantInput } from 'shared/types';
+import { ITagInput, IVariantInput } from 'shared/types';
+import { v4 } from 'uuid';
 
 interface Props {
-   onVariantChange?: (variant: IVariantInput, index: number) => any;
-   index: number;
+   onVariantsChange?: (variants: IVariantInput[]) => any;
 }
 
-const VariantInput = ({ onVariantChange, index }: Props) => {
-   const [variant, setVariant] = useState<IVariantInput | null>(null);
-
-   useEffect(() => {
-      if (variant) {
-         onVariantChange && onVariantChange(variant, index);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [variant]);
-
-   return (
-      <div className="flex items-center space-x-4 w-full">
-         <InputDropdown
-            listValues={[
-               {
-                  name: 'hi',
-                  value: 'hi',
-               },
-               {
-                  name: 'h1',
-                  value: 'h1',
-               },
-            ]}
-            onValueChange={(value) => {
-               const newVariant: IVariantInput = {
-                  key: value,
-                  values: [],
-               };
-
-               setVariant(newVariant);
-            }}
-         />
-         <InputTag
-            onTagChange={(tags) => {
-               setVariant((_variant) => {
-                  return {
-                     key: _variant?.key as string,
-                     values: tags.map((_tag) => _tag.value),
-                  };
-               });
-            }}
-         />
-      </div>
-   );
-};
-
-const VariantInputs = () => {
+const VariantInputs = ({ onVariantsChange }: Props) => {
    const [variants, setVariants] = useState<IVariantInput[]>([]);
+   const [tagsOwnVariant, setTagsOwnVariant] = useState<ITagInput[]>([]);
+   const [keyOwnVariant, setKeyOwnVariant] = useState<string>('');
+   const [showAddOwnVariant, setShowAddOwnVariant] = useState<boolean>(false);
 
-   console.log(variants);
-
-   const handleAddVariant = () => {
+   const handleAddVariant = useCallback(() => {
       const newVariant: IVariantInput = {
+         id: v4(),
          key: '',
          values: [],
       };
-      setVariants([...variants, newVariant]);
-   };
 
-   console.log(variants);
+      setVariants((_variants) => {
+         return [..._variants].concat(newVariant);
+      });
+   }, []);
+
+   useEffect(() => {
+      onVariantsChange && onVariantsChange(variants);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [variants]);
 
    return (
       <Card title="Product variants">
-         <span className="text-muted mb-4 block">Add Product Variant.</span>
+         <div className="mb-4 flex items-center justify-between">
+            <span className="text-muted  block">Add Product Variant.</span>
+            <button
+               className="text-vz-primary underline"
+               onClick={() => {
+                  setShowAddOwnVariant(true);
+               }}
+            >
+               Add your variant
+            </button>
+         </div>
          {variants.length > 0 && (
-            <ul className="flex gap-4 flex-col">
+            <div className="flex gap-4 flex-col">
                {variants.map((_variant, _index) => {
                   return (
                      <div
                         className="flex items-center gap-4 w-full"
-                        key={_index}
+                        key={_variant.id}
                      >
-                        <VariantInput
-                           index={_index}
-                           onVariantChange={(variantValue, index) => {
-                              console.log(index);
-                              let variantsClone = [...variants];
-                              variantsClone[index] = variantValue;
-                              setVariants(variantsClone);
-                           }}
-                        />
+                        {_variant.readonly ? (
+                           <ReadOnlyVariant variant={_variant} />
+                        ) : (
+                           <div className="flex items-center space-x-4 w-full">
+                              <InputDropdown
+                                 listValues={[
+                                    {
+                                       name: 'hi',
+                                       value: 'hi',
+                                    },
+                                    {
+                                       name: 'h1',
+                                       value: 'h1',
+                                    },
+                                 ]}
+                                 onValueChange={(value) => {
+                                    setVariants((variants) => {
+                                       let variantsClone = [...variants];
+                                       variantsClone[_index] = {
+                                          ...variantsClone[_index],
+                                          key: value,
+                                       };
+                                       return variantsClone;
+                                    });
+                                 }}
+                              />
+                              <InputTag
+                                 onTagChange={(tags) => {
+                                    setVariants((variants) => {
+                                       let variantsClone = [...variants];
+                                       variantsClone[_index] = {
+                                          ...variantsClone[_index],
+                                          values: tags.map(
+                                             (_tag) => _tag.value
+                                          ),
+                                       };
+                                       return variantsClone;
+                                    });
+                                 }}
+                              />
+                           </div>
+                        )}
                         <button
-                           className="w-[37.5px] h-[37.5px] flex items-center justify-center bg-red-500 rounded"
+                           className="w-[37.5px] h-[37.5px] flex items-center justify-center bg-red-500 rounded flex-shrink-0"
                            onClick={() => {
                               setVariants(
                                  [...variants].filter(
-                                    (_, index) => index !== _index
+                                    (v) => v.id !== _variant.id
                                  )
                               );
                            }}
@@ -105,7 +112,7 @@ const VariantInputs = () => {
                      </div>
                   );
                })}
-            </ul>
+            </div>
          )}
          <Button
             className="vz-button vz-button-primary mt-4"
@@ -113,7 +120,80 @@ const VariantInputs = () => {
          >
             {variants.length > 0 ? 'Add more variant' : 'Add variant'}
          </Button>
+         <AnimatePresence>
+            {showAddOwnVariant && (
+               <ModalWrap
+                  title="Add your own variant"
+                  handleCancel={() => {
+                     setShowAddOwnVariant(false);
+                     setTagsOwnVariant([]);
+                     setKeyOwnVariant('');
+                  }}
+                  handleOk={() => {
+                     if (
+                        keyOwnVariant.trim().length === 0 ||
+                        tagsOwnVariant.length === 0
+                     ) {
+                        message.error('Field variant and tags must enter');
+                        return;
+                     }
+                     const newVariant: IVariantInput = {
+                        id: v4(),
+                        key: keyOwnVariant,
+                        values: tagsOwnVariant.map((_tag) => _tag.value),
+                        readonly: true,
+                     };
+                     setVariants((_variants) => {
+                        return [..._variants].concat(newVariant);
+                     });
+                     setTagsOwnVariant([]);
+                     setKeyOwnVariant('');
+                  }}
+                  textOk="Add variant"
+               >
+                  <div className="flex flex-col space-y-4">
+                     <InputCustom
+                        placeholder="Enter variant"
+                        onChange={(e) => {
+                           setKeyOwnVariant(e.target.value);
+                        }}
+                     />
+                     <InputTag
+                        onTagChange={(tags) => {
+                           setTagsOwnVariant(tags);
+                        }}
+                     />
+                  </div>
+               </ModalWrap>
+            )}
+         </AnimatePresence>
       </Card>
+   );
+};
+
+interface ReadOnlyProps {
+   variant: IVariantInput;
+}
+
+const ReadOnlyVariant = ({ variant }: ReadOnlyProps) => {
+   return (
+      <div className="flex items-center space-x-4 w-full  ">
+         <div className="vz-input w-full flex-1 hover:border-transparent">
+            {variant.key}
+         </div>
+         <div className="vz-input w-full flex-1 hover:border-vz-input-border !h-[unset] min-h-[37.5px]">
+            <div className="flex items-center gap-2 flex-wrap ">
+               {variant.values.map((tag, _index) => (
+                  <div
+                     className="flex items-center rounded bg-vz-body-color p-2 w-fit"
+                     key={_index}
+                  >
+                     <span className="mr-2">{tag}</span>
+                  </div>
+               ))}
+            </div>
+         </div>
+      </div>
    );
 };
 

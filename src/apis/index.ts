@@ -1,3 +1,4 @@
+import axios from 'axios';
 import axiosClient from 'lib/axiosClient';
 import { ICategory, IChildCategory, IProduct, IResData } from 'shared/types';
 
@@ -31,6 +32,11 @@ export const eCommerceApis = {
    },
    addProduct: (data: any) => {
       return axiosClient.post<IResData<IProduct>>('/product', data);
+   },
+   uploadImages: (data: any) => {
+      return axios.post<{
+         urls: Array<string>;
+      }>('https://isekai-api.me/api/upload', data);
    },
 };
 
