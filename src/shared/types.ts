@@ -30,6 +30,14 @@ export interface IChildCategory {
    updated_at: string;
 }
 
+export interface IVariant {
+   id: string;
+   created_at: string;
+   updated_at: string;
+   key: string;
+   values: Array<string>;
+}
+
 export interface IProduct {
    name: string;
    description: string;
@@ -37,17 +45,13 @@ export interface IProduct {
    quantity: number;
    stock: number;
    images: Array<string>;
+   categories: Array<ICategory>;
    categories_id: Array<string>;
-   [key: string]: any;
-   metadata: {
-      [key: string]: Array<{
-         name: string;
-         value: string;
-      }>;
-   };
+   creator: null | any;
    specific: {
       [key: string]: any;
    };
+   variants: Array<IVariant>;
 }
 
 export interface IToken {
@@ -70,3 +74,15 @@ export type WithLayout = {
 };
 
 export type MenuItem = Required<MenuProps>['items'][number];
+
+export interface IVariantInput {
+   id: string;
+   key: string;
+   values: Array<string>;
+   readonly?: boolean;
+}
+
+export interface ITagInput {
+   id: string;
+   value: string;
+}

@@ -22,6 +22,7 @@ export const InputCustom = React.forwardRef<any, Props>(
          classNameWrap,
          isRequire,
          error,
+         className,
          ...props
       },
       ref
@@ -40,27 +41,23 @@ export const InputCustom = React.forwardRef<any, Props>(
 
             {props.isTextArea ? (
                <Input.TextArea
-                  {...props.propsTextArea}
-                  className={`rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2 vz-input  ${
+                  className={` vz-input  ${
                      props.propsTextArea?.className || ''
-                  } ${props.className || ''} ${
-                     error ? 'isError' : ''
-                  } h-[37.5px] bg-vz-input-bg border-vz-input-border text-vz-text-color-body`}
+                  } ${className || ''} ${error ? 'isError' : ''} `}
                   //@ts-ignore
                   ref={ref}
+                  {...props.propsTextArea}
                ></Input.TextArea>
             ) : (
                <Input
                   //@ts-ignore
-                  {...props}
-                  className={`rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2  vz-input  ${
-                     props.className || ''
-                  } ${
+                  className={` vz-input ${className || ''} ${
                      error ? 'isError' : ''
-                  } h-[37.5px] bg-vz-input-bg border-vz-input-border text-vz-text-color-body`}
+                  } `}
                   //@ts-ignore
                   ref={ref}
                   type={props.type}
+                  {...props}
                />
             )}
             {error && <p className="text-red-600 mt-1">{error}</p>}

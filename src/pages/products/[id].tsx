@@ -1,7 +1,3 @@
-import React from 'react';
+import { ProductDetail } from 'screens';
 
-const Product = () => {
-   return <div>Product</div>;
-};
-
-export default Product;
+export default ProductDetail;

@@ -1,15 +1,10 @@
+import axios from 'axios';
 import axiosClient from 'lib/axiosClient';
-import { ICategory, IChildCategory, IResData } from 'shared/types';
+import { ICategory, IChildCategory, IProduct, IResData } from 'shared/types';
 
 export const eCommerceApis = {
    getAllCategories: (url: string) => {
-      return axiosClient.get<
-         IResData<{
-            categories: ICategory[];
-            children: null | any;
-            total: number;
-         }>
-      >(url);
+      return axiosClient.get<IResData<ICategory[]>>(url);
    },
    addCategory: (data: { name: string; description: string }) => {
       return axiosClient.post<IResData<ICategory>>('/category', data);
@@ -35,14 +30,19 @@ export const eCommerceApis = {
          },
       });
    },
-   addProduct: () => {},
+   addProduct: (data: any) => {
+      return axiosClient.post<IResData<IProduct>>('/product', data);
+   },
+   uploadImages: (data: any) => {
+      return axios.post<{
+         urls: Array<string>;
+      }>('https://isekai-api.me/api/upload', data);
+   },
 };
 
 export const fetcher = {
    getAllCategories: (url: string) =>
-      eCommerceApis
-         .getAllCategories(url)
-         .then((res) => res.data.data.categories),
+      eCommerceApis.getAllCategories(url).then((res) => res.data.data),
    getAllProducts: (
       url: string,
       page?: number,

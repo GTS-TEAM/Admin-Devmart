@@ -1,4 +1,4 @@
 export * from './useBodyOverflow';
-export * from './useClickoutside';
+export * from './useClickOutside';
 export * from './useIsMouted';
 export * from './useObservationSize';

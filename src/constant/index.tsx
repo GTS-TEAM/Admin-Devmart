@@ -9,7 +9,7 @@ import {
 
 export const ERROR_TOKEN = 'RefreshAccessTokenError';
 
-export const BASE_URL_API = 'http://3.0.102.186/api';
+export const BASE_URL_API = 'https://api.devmart.software/api';
 
 export const ROUTES = {
    LOGIN: '/login',
