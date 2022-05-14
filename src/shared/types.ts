@@ -74,3 +74,13 @@ export type WithLayout = {
 };
 
 export type MenuItem = Required<MenuProps>['items'][number];
+
+export interface IVariantInput {
+   key: string;
+   values: Array<string>;
+}
+
+export interface ITagInput {
+   id: string;
+   value: string;
+}

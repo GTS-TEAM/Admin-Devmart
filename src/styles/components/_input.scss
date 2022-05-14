@@ -1,3 +1,7 @@
-input.vz-input.isError {
-   @apply border-red-600;
+.vz-input {
+   @apply rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2 h-[37.5px] bg-vz-input-bg border-vz-input-border text-vz-text-color-body border border-solid;
+
+   &.isError {
+      @apply border-red-600;
+   }
 }

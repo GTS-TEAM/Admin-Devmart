@@ -41,11 +41,9 @@ export const InputCustom = React.forwardRef<any, Props>(
 
             {props.isTextArea ? (
                <Input.TextArea
-                  className={`rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2 vz-input  ${
+                  className={` vz-input  ${
                      props.propsTextArea?.className || ''
-                  } ${className || ''} ${
-                     error ? 'isError' : ''
-                  } h-[37.5px] bg-vz-input-bg border-vz-input-border text-vz-text-color-body`}
+                  } ${className || ''} ${error ? 'isError' : ''} `}
                   //@ts-ignore
                   ref={ref}
                   {...props.propsTextArea}
@@ -53,11 +51,9 @@ export const InputCustom = React.forwardRef<any, Props>(
             ) : (
                <Input
                   //@ts-ignore
-                  className={`rounded focus:border-vz-input-focus-border  focus:shadow-vz-input-shadow hover:border-vz-input-focus-border px-4 py-2  vz-input  ${
-                     className || ''
-                  } ${
+                  className={` vz-input ${className || ''} ${
                      error ? 'isError' : ''
-                  } h-[37.5px] bg-vz-input-bg border-vz-input-border text-vz-text-color-body`}
+                  } `}
                   //@ts-ignore
                   ref={ref}
                   type={props.type}

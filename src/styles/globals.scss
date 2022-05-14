@@ -265,3 +265,10 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
    -moz-appearance: textfield;
 }
+
+input {
+   outline: none;
+   border: none;
+   font-size: inherit;
+   font-family: inherit;
+}
