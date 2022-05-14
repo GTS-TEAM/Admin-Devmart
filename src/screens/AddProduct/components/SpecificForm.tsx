@@ -11,13 +11,7 @@ interface Props {
 const SpecificForm: React.FC<Props> = ({ onChange }) => {
    const [specifics, setSpecifics] = useState<
       { id: string; [key: string]: string }[]
-   >([
-      {
-         id: '1',
-         name: '',
-         value: '',
-      },
-   ]);
+   >([]);
 
    const handleChange = (
       event: React.ChangeEvent<HTMLInputElement>,
@@ -65,38 +59,39 @@ const SpecificForm: React.FC<Props> = ({ onChange }) => {
    return (
       <Card title="Specific">
          <div>
-            <ul>
-               {specifics.map((specific, index) => {
-                  return (
-                     <li key={specific.id} className="mb-4 last:mb-0 ">
-                        <Row gutter={16} className="w-full">
-                           <Col span={20}>
-                              <div className="flex items-center gap-4 flex-1">
-                                 <InputCustom
-                                    classNameWrap="w-full"
-                                    label="Specific name"
-                                    name="name"
-                                    value={specific.name}
-                                    onChange={(e) => {
-                                       handleChange(e, index);
-                                    }}
-                                 />
-                                 <InputCustom
-                                    classNameWrap="w-full"
-                                    label="Specific value"
-                                    value={specific.value}
-                                    name="value"
-                                    onChange={(e) => {
-                                       handleChange(e, index);
-                                    }}
-                                 />
-                              </div>
-                           </Col>
-                           <Col
-                              span={4}
-                              className="flex items-end justify-center"
-                           >
-                              {index !== 0 && (
+            <span className="text-muted mb-4 block">Add Product Specific.</span>
+            {specifics.length > 0 && (
+               <ul>
+                  {specifics.map((specific, index) => {
+                     return (
+                        <li key={specific.id} className="mb-4 last:mb-0 ">
+                           <Row gutter={16} className="w-full">
+                              <Col span={20}>
+                                 <div className="flex items-center gap-4 flex-1">
+                                    <InputCustom
+                                       classNameWrap="w-full"
+                                       label="Specific name"
+                                       name="name"
+                                       value={specific.name}
+                                       onChange={(e) => {
+                                          handleChange(e, index);
+                                       }}
+                                    />
+                                    <InputCustom
+                                       classNameWrap="w-full"
+                                       label="Specific value"
+                                       value={specific.value}
+                                       name="value"
+                                       onChange={(e) => {
+                                          handleChange(e, index);
+                                       }}
+                                    />
+                                 </div>
+                              </Col>
+                              <Col
+                                 span={4}
+                                 className="flex items-end justify-center"
+                              >
                                  <button
                                     className="h-[37.5px] w-full flex-1 bg-red-200 text-red-500 rounded"
                                     onClick={() => {
@@ -110,18 +105,19 @@ const SpecificForm: React.FC<Props> = ({ onChange }) => {
                                  >
                                     Remove
                                  </button>
-                              )}
-                           </Col>
-                        </Row>
-                     </li>
-                  );
-               })}
-            </ul>
+                              </Col>
+                           </Row>
+                        </li>
+                     );
+                  })}
+               </ul>
+            )}
+
             <Button
                className="vz-button vz-button-primary mt-4"
                onClick={handleAddMoreSpecific}
             >
-               Add more specific
+               {specifics.length > 0 ? 'Add more specific' : 'Add specific'}
             </Button>
          </div>
       </Card>
