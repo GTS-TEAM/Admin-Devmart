@@ -85,11 +85,6 @@ export default NextAuth({
       }),
    ],
    callbacks: {
-      //@ts-ignore
-      async redirect(url, baseUrl) {
-         console.log(url, baseUrl);
-         return baseUrl;
-      },
       async jwt({ token, user }) {
          if (token && user) {
             const {

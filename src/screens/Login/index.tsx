@@ -70,26 +70,31 @@ const Login: React.FC = () => {
                                  htmlType="submit"
                                  className="w-full vz-button-primary vz-button"
                                  onClick={async (e) => {
-                                    e.preventDefault();
-                                    setIsLoading(true);
-                                    const res: any = await signIn(
-                                       'credentials',
-                                       {
-                                          email,
-                                          password,
-                                          callbackUrl: `${window.location.origin}/`,
-                                          redirect: false,
-                                       }
-                                    );
+                                    try {
+                                       e.preventDefault();
+                                       setIsLoading(true);
+                                       const res: any = await signIn(
+                                          'credentials',
+                                          {
+                                             email,
+                                             password,
+                                             callbackUrl: `${window.location.origin}/`,
+                                             redirect: false,
+                                          }
+                                       );
 
-                                    if (res?.error) {
+                                       if (res?.error) {
+                                          setIsLoading(false);
+                                          message.error(res.error);
+                                          return;
+                                       }
                                        setIsLoading(false);
-                                       message.error(res.error);
-                                       return;
+                                       router.push(ROUTES.HOME);
+                                       message.success('Login successfully');
+                                    } catch (error) {
+                                       console.dir(error);
+                                       setIsLoading(false);
                                     }
-                                    setIsLoading(false);
-                                    router.push(ROUTES.HOME);
-                                    message.success('Login successfully');
                                  }}
                                  loading={isLoading}
                                  disabled={
