@@ -1,0 +1,88 @@
+.ck.ck-reset,
+.ck.ck-reset_all,
+.ck.ck-reset_all * {
+   margin: 0;
+   padding: 0;
+   border: 0;
+   background: transparent;
+   text-decoration: none;
+   vertical-align: middle;
+   transition: none;
+   word-wrap: break-word;
+   color: var(--vz-body-color) !important;
+   font-family: var(--vz-font-sans-serif);
+}
+
+.ck.ck-button.ck-on,
+a.ck.ck-button.ck-on {
+   background-color: var(--vz-input-bg) !important;
+}
+
+.ck.ck-button:not(.ck-disabled):hover,
+a.ck.ck-button:not(.ck-disabled):hover {
+   background-color: var(--vz-light) !important;
+}
+
+.ck.ck-list {
+   background-color: var(--vz-dropdown-bg) !important ;
+}
+
+.ck.ck-dropdown__panel {
+   border: 1px solid var(--vz-border-color) !important;
+   background-color: var(--vz-dropdown-bg) !important ;
+}
+
+.ck.ck-editor__main > .ck-editor__editable {
+   border-top: 0 !important;
+   background-color: var(--vz-card-bg) !important;
+   border-color: var(--vz-input-border) !important;
+   -webkit-box-shadow: none !important;
+   box-shadow: none !important;
+}
+
+.ck.ck-toolbar {
+   background: rgba(var(--vz-light-rgb), 0.75) !important;
+   border: 1px solid var(--vz-input-border) !important;
+}
+
+.ck.ck-tooltip .ck-tooltip__text {
+   color: white !important;
+}
+
+.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne,
+.ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se {
+   border-radius: 4px;
+   box-shadow: none;
+   background-color: var(--vz-card-bg) !important;
+}
+
+.ck.ck-input {
+   background-color: var(--vz-input-bg) !important;
+   border: 1px solid var(--vz-input-border) !important;
+}
+
+.ck.ck-input:focus {
+   box-shadow: none;
+}
+
+.ck.ck-labeled-field-view
+   > .ck.ck-labeled-field-view__input-wrapper
+   > .ck.ck-label {
+   background-color: var(--vz-body-bg);
+}
+
+.vz-add-product-label {
+   @apply mb-2 font-medium block;
+}
+
+.vz-add-product-title {
+}
+
+.vz-gallery {
+   .vz-upload {
+      background-color: transparent !important;
+   }
+   .ant-upload-list-item-name {
+      color: var(--vz-body-color) !important;
+   }
+}
