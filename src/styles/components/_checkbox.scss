@@ -87,3 +87,23 @@
       @apply border-vz-primary;
    }
 }
+
+.vz-radio {
+   @apply m-0 text-vz-text-color-body;
+
+   .ant-radio-checked::after,
+   .ant-radio-checked .ant-radio-inner,
+   .ant-radio-wrapper:hover .ant-radio,
+   .ant-radio:hover .ant-radio-inner,
+   .ant-radio-input:focus + .ant-radio-inner {
+      @apply border-vz-primary;
+   }
+
+   .ant-radio-inner {
+      @apply border-vz-border-color bg-transparent;
+   }
+
+   .ant-radio-inner::after {
+      @apply bg-vz-primary;
+   }
+}

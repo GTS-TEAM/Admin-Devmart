@@ -1,6 +1,12 @@
 import axios from 'axios';
 import axiosClient from 'lib/axiosClient';
-import { ICategory, IChildCategory, IProduct, IResData } from 'shared/types';
+import {
+   ICategory,
+   IChildCategory,
+   IFilterProduct,
+   IProduct,
+   IResData,
+} from 'shared/types';
 
 export const eCommerceApis = {
    getAllCategories: (url: string) => {
@@ -16,17 +22,10 @@ export const eCommerceApis = {
    }) => {
       return axiosClient.post<IResData<IChildCategory>>('/category', data);
    },
-   getAllProducts: (
-      url: string,
-      page?: number,
-      limit?: number,
-      sort?: string
-   ) => {
+   getAllProducts: (url: string, filler?: IFilterProduct) => {
       return axiosClient.get<IResData<any>>(url, {
          params: {
-            page,
-            limit,
-            sort,
+            ...filler,
          },
       });
    },
@@ -43,13 +42,6 @@ export const eCommerceApis = {
 export const fetcher = {
    getAllCategories: (url: string) =>
       eCommerceApis.getAllCategories(url).then((res) => res.data.data),
-   getAllProducts: (
-      url: string,
-      page?: number,
-      limit?: number,
-      sort?: string
-   ) =>
-      eCommerceApis
-         .getAllProducts(url, page, limit, sort)
-         .then((res) => res.data.data),
+   getAllProducts: (url: string, filler?: IFilterProduct) =>
+      eCommerceApis.getAllProducts(url, filler).then((res) => res.data.data),
 };

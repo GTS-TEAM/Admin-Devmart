@@ -16,16 +16,16 @@ const Sidebar: React.FC<Props> = ({ isResize, isShowSidebar, onClose }) => {
 
    return (
       <aside
-         className="h-screen bg-vz-bg-sidebar fixed top-0 left-[-100%] md:left-0 bottom-0 w-vz-sidebar md:transition-[width] !duration-300 transition-[left] z-[110]"
+         className="h-screen bg-vz-bg-sidebar fixed top-0 left-[-100%] lg:left-0 bottom-0 w-vz-sidebar lg:transition-[width] !duration-300 transition-[left] z-[110]"
          style={{
             width:
-               width && width > 767
+               width && width > 1023
                   ? isResize
                      ? '70px'
                      : undefined
                   : undefined,
             left:
-               width && width < 768
+               width && width < 1024
                   ? isShowSidebar
                      ? '0'
                      : '-100%'

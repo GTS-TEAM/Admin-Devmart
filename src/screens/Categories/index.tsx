@@ -22,8 +22,6 @@ const Categories: WithLayout = () => {
       null
    );
 
-   console.log(categories);
-
    const columns: ColumnsType<ICategory> = [
       {
          title: 'Category',

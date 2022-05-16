@@ -13,6 +13,9 @@ const nextConfig = {
    sassOptions: {
       includePaths: [path.join(__dirname, 'styles')],
    },
+   images: {
+      domains: ['res.cloudinary.com', 'cf.shopee.vn', 'loremflickr.com'],
+   },
    webpack(config) {
       config.module.rules.push({
          test: /\.svg$/i,

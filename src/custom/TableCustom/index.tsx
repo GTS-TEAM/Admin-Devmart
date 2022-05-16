@@ -5,7 +5,11 @@ interface Props<T> extends TableProps<T> {
    total?: number;
 }
 
-export const TableCustom: React.FC<Props<any>> = (props) => {
+export const TableCustom: React.FC<Props<any>> = ({
+   className,
+   pagination,
+   ...props
+}) => {
    const ref = useRef(null);
 
    React.useEffect(() => {
@@ -37,7 +41,7 @@ export const TableCustom: React.FC<Props<any>> = (props) => {
          }}
       >
          <Table
-            className={`vzTableCustom ${props.className || ''} `}
+            className={`vzTableCustom ${className || ''} `}
             pagination={{
                className: `vz-pagination-table flex flex-wrap ${
                   props.dataSource?.length === 0 || !props.dataSource
@@ -65,6 +69,7 @@ export const TableCustom: React.FC<Props<any>> = (props) => {
                   }
                   return originalElement;
                },
+               ...pagination,
             }}
             {...props}
          />

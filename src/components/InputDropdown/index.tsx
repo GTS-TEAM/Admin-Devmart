@@ -1,3 +1,4 @@
+import Menu from 'components/Menu';
 import { TYPE_VARIANTS } from 'constant';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useOnClickOutside } from 'hooks';
@@ -54,37 +55,35 @@ export const InputDropdown: React.FC<Props> = ({
          <AnimatePresence>
             {isShowDropdown && (
                <motion.div
-                  className="absolute bg-vz-dropdown-bg border border-solid border-vz-border-color w-full mt-2 py-2 rounded z-40 "
+                  className="absolute z-40 mt-2 w-full "
                   variants={moveUpDropdown}
                   ref={listValueRef}
                   initial={TYPE_VARIANTS.HIDDEN}
                   animate={TYPE_VARIANTS.VISIBLE}
                   exit={TYPE_VARIANTS.EXIT}
                >
-                  <ul>
+                  <Menu>
                      {listValues.map((_value) => {
                         return (
-                           <li key={_value.name}>
-                              <div
-                                 data-value={value}
-                                 className="px-4 py-2 cursor-pointer hover:bg-vz-dropdown-link-hover-bg transition-all "
-                                 onClick={() => {
-                                    setValue(_value.value);
-                                    setIsShowDropdown(false);
-                                 }}
-                                 style={{
-                                    backgroundColor:
-                                       _value.value === value
-                                          ? ' var(--vz-dropdown-link-hover-bg)'
-                                          : undefined,
-                                 }}
-                              >
-                                 {_value.name}
-                              </div>
-                           </li>
+                           <Menu.MenuItem
+                              key={_value.name}
+                              data-value={value}
+                              onClick={() => {
+                                 setValue(_value.value);
+                                 setIsShowDropdown(false);
+                              }}
+                              style={{
+                                 backgroundColor:
+                                    _value.value === value
+                                       ? ' var(--vz-dropdown-link-hover-bg)'
+                                       : undefined,
+                              }}
+                           >
+                              {_value.name}
+                           </Menu.MenuItem>
                         );
                      })}
-                  </ul>
+                  </Menu>
                </motion.div>
             )}
          </AnimatePresence>

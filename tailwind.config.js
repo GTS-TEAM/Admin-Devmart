@@ -33,10 +33,14 @@ module.exports = {
             'vz-dropdown-border': 'var(--vz-border-color)',
             'vz-dropdown-link-hover-bg': 'var(--vz-dropdown-link-hover-bg)',
             'vz-red': 'var(--vz-red)',
+            'vz-dropdown-link-color': 'var(--vz-dropdown-link-color)',
+            'vz-dropdown-link-color-hover':
+               'var(--vz-dropdown-link-hover-color)',
          },
          boxShadow: {
             'vz-input-shadow': '0 0 0 0 rgb(64 81 137 / 25%)',
             'vz-card': '0 1px 2px rgb(56 65 74 / 15%)',
+            'vz-menu': '0 5px 10px rgb(30 32 37 / 12%)',
          },
          spacing: {
             'vz-sidebar': 'var(--vz-width-sidebar)',

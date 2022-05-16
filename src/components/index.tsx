@@ -7,6 +7,7 @@ export * from './InputDropdown';
 export { default as InputTag } from './InputTag';
 export { default as Layout } from './Layout';
 export { default as Loading } from './Loading';
+export { default as Menu } from './Menu';
 export * from './Modal';
 export * from './requireAuth';
 export { default as Sidebar } from './Sidebar';
