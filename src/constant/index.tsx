@@ -2,6 +2,7 @@ import { IconType } from 'react-icons';
 import {
    AiOutlineAppstore,
    AiOutlineContainer,
+   AiOutlineInsertRowBelow,
    AiOutlineShop,
    AiOutlineSlack,
    AiOutlineUser,
@@ -18,10 +19,11 @@ export const ROUTES = {
    PRODUCTS: '/products',
    ADD_PRODUCT: '/products/add-product',
    ORDERS: '/orders',
-   CUSTOMERS: '/customer',
+   CUSTOMERS: '/customers',
    CATEGORIES: '/categories',
    ADD_CATEGORIES: '/add-category',
    PRODUCT_DETAIL: '/products/[id]',
+   METADATA: '/metadata',
 };
 
 export const IS_SERVER = typeof window === 'undefined';
@@ -56,6 +58,11 @@ export const SIDEBAR: {
       name: 'Orders',
       icon: AiOutlineShop,
       path: ROUTES.ORDERS,
+   },
+   {
+      name: 'Metadata',
+      path: ROUTES.METADATA,
+      icon: AiOutlineInsertRowBelow,
    },
 ];
 
