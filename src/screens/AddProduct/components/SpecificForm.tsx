@@ -57,7 +57,7 @@ const SpecificForm: React.FC<Props> = ({ onChange }) => {
    }, [specifics]);
 
    return (
-      <Card title="Specific">
+      <Card title="Specific" isHaveClassBody>
          <div>
             <span className="text-muted mb-4 block">Add Product Specific.</span>
             {specifics.length > 0 && (

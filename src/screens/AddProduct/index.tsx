@@ -115,7 +115,7 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
          <div className="w-full h-full flex-1">
             <Row gutter={16} className="h-full">
                <Col span={16} className="flex flex-col gap-4">
-                  <Card customHeader={<></>}>
+                  <Card customHeader={<></>} isHaveClassBody>
                      <div className="w-full flex flex-col gap-4">
                         <InputCustom
                            placeholder="Enter product title"
@@ -159,7 +159,7 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                         isRequire={true}
                      />
                   </Card>
-                  <Card title="Product Gallery">
+                  <Card title="Product Gallery" isHaveClassBody>
                      <div className="flex flex-col gap-4">
                         <div className="vz-gallery">
                            <label className="vz-add-product-label">
@@ -209,7 +209,7 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                   </Button>
                </Col>
                <Col span={8} className="flex flex-col gap-4">
-                  <Card title="Product Categories">
+                  <Card title="Product Categories" isHaveClassBody>
                      <label className="vz-add-product-label">
                         Choose categories
                         <span className="text-red-600 ml-1">*</span>
@@ -227,7 +227,7 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                         }}
                      />
                   </Card>
-                  <Card title="Product Short Description">
+                  <Card title="Product Short Description" isHaveClassBody>
                      <p className="text-muted mb-2">
                         Add short description for product
                      </p>

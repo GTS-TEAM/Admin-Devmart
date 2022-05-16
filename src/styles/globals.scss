@@ -272,3 +272,18 @@ input {
    font-size: inherit;
    font-family: inherit;
 }
+
+.vz-popover-action-product {
+   .ant-popover-arrow {
+      display: none;
+   }
+
+   .ant-popover-inner-content {
+      @apply p-0;
+   }
+
+   .ant-popover-inner {
+      background-color: transparent;
+      @apply shadow-sm;
+   }
+}
