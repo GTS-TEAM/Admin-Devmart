@@ -68,7 +68,7 @@ const InputTag = ({ onTagChange }: Props) => {
             onChange={(e) => {
                setHtml(e.target.value);
             }}
-            className="w-full bg-transparent h-full focus:border-0 focus:outline-none"
+            className="w-full bg-transparent h-full focus:border-0 focus:outline-none text-vz-text-color-body"
          />
       </div>
    );

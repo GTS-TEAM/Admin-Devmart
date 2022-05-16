@@ -29,13 +29,60 @@ const VariantInputs = ({ onVariantsChange }: Props) => {
       });
    }, []);
 
+   const handelOk = useCallback(() => {
+      if (keyOwnVariant.trim().length === 0 || tagsOwnVariant.length === 0) {
+         message.error('Field variant and tags must enter');
+         return;
+      }
+      const newVariant: IVariantInput = {
+         id: v4(),
+         key: keyOwnVariant,
+         values: tagsOwnVariant.map((_tag) => _tag.value),
+         readonly: true,
+      };
+      setVariants((_variants) => {
+         return [..._variants].concat(newVariant);
+      });
+      setTagsOwnVariant([]);
+      setKeyOwnVariant('');
+      setShowAddOwnVariant(false);
+   }, [keyOwnVariant, tagsOwnVariant]);
+
+   const handleCancel = useCallback(() => {
+      setShowAddOwnVariant(false);
+      setTagsOwnVariant([]);
+      setKeyOwnVariant('');
+   }, []);
+
+   const handleTagChange = useCallback((tags: ITagInput[], index: number) => {
+      setVariants((variants) => {
+         let variantsClone = [...variants];
+         variantsClone[index] = {
+            ...variantsClone[index],
+            values: tags.map((_tag) => _tag.value),
+         };
+         return variantsClone;
+      });
+   }, []);
+
+   const handelVariantChange = useCallback((value: string, _index: number) => {
+      setVariants((variants) => {
+         let variantsClone = [...variants];
+         variantsClone[_index] = {
+            ...variantsClone[_index],
+            key: value,
+         };
+         return variantsClone;
+      });
+   }, []);
+
    useEffect(() => {
       onVariantsChange && onVariantsChange(variants);
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [variants]);
 
    return (
-      <Card title="Product variants">
+      <Card title="Product variants" isHaveClassBody>
          <div className="mb-4 flex items-center justify-between">
             <span className="text-muted  block">Add Product Variant.</span>
             <button
@@ -71,28 +118,12 @@ const VariantInputs = ({ onVariantsChange }: Props) => {
                                     },
                                  ]}
                                  onValueChange={(value) => {
-                                    setVariants((variants) => {
-                                       let variantsClone = [...variants];
-                                       variantsClone[_index] = {
-                                          ...variantsClone[_index],
-                                          key: value,
-                                       };
-                                       return variantsClone;
-                                    });
+                                    handelVariantChange(value, _index);
                                  }}
                               />
                               <InputTag
                                  onTagChange={(tags) => {
-                                    setVariants((variants) => {
-                                       let variantsClone = [...variants];
-                                       variantsClone[_index] = {
-                                          ...variantsClone[_index],
-                                          values: tags.map(
-                                             (_tag) => _tag.value
-                                          ),
-                                       };
-                                       return variantsClone;
-                                    });
+                                    handleTagChange(tags, _index);
                                  }}
                               />
                            </div>
@@ -124,31 +155,8 @@ const VariantInputs = ({ onVariantsChange }: Props) => {
             {showAddOwnVariant && (
                <ModalWrap
                   title="Add your own variant"
-                  handleCancel={() => {
-                     setShowAddOwnVariant(false);
-                     setTagsOwnVariant([]);
-                     setKeyOwnVariant('');
-                  }}
-                  handleOk={() => {
-                     if (
-                        keyOwnVariant.trim().length === 0 ||
-                        tagsOwnVariant.length === 0
-                     ) {
-                        message.error('Field variant and tags must enter');
-                        return;
-                     }
-                     const newVariant: IVariantInput = {
-                        id: v4(),
-                        key: keyOwnVariant,
-                        values: tagsOwnVariant.map((_tag) => _tag.value),
-                        readonly: true,
-                     };
-                     setVariants((_variants) => {
-                        return [..._variants].concat(newVariant);
-                     });
-                     setTagsOwnVariant([]);
-                     setKeyOwnVariant('');
-                  }}
+                  handleCancel={handleCancel}
+                  handleOk={handelOk}
                   textOk="Add variant"
                >
                   <div className="flex flex-col space-y-4">

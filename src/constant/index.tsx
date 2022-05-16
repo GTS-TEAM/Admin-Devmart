@@ -21,6 +21,7 @@ export const ROUTES = {
    CUSTOMERS: '/customer',
    CATEGORIES: '/categories',
    ADD_CATEGORIES: '/add-category',
+   PRODUCT_DETAIL: '/products/[id]',
 };
 
 export const IS_SERVER = typeof window === 'undefined';

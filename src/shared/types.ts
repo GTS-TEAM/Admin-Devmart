@@ -52,6 +52,9 @@ export interface IProduct {
       [key: string]: any;
    };
    variants: Array<IVariant>;
+   rating: number;
+   category: string;
+   id: string;
 }
 
 export interface IToken {
@@ -85,4 +88,14 @@ export interface IVariantInput {
 export interface ITagInput {
    id: string;
    value: string;
+}
+
+export interface IFilterProduct {
+   category_id?: string;
+   sort?: string;
+   page?: string;
+   limit?: string;
+   min_price?: number;
+   max_price?: number;
+   min_rating?: number;
 }

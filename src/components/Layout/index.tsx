@@ -15,10 +15,10 @@ const Layout: React.FC<{
    return (
       <div className="min-h-screen flex layout">
          <div
-            className="fixed top-0 right-0 left-0 md:left-vz-sidebar transition-[left] duration-300 z-50 "
+            className="fixed top-0 right-0 left-0 lg:left-vz-sidebar transition-[left] duration-300 z-50 "
             style={{
                left:
-                  width && width > 767
+                  width && width > 1023
                      ? !isExpandSidebar
                         ? '70px'
                         : undefined
@@ -27,7 +27,7 @@ const Layout: React.FC<{
          >
             <Header
                toggleSidebar={() => {
-                  if (width && width < 768) {
+                  if (width && width < 1024) {
                      setIsShowSidebar(!isShowSidebar);
                   } else {
                      setIsExpandSidebar(!isExpandSidebar);
@@ -50,14 +50,14 @@ const Layout: React.FC<{
             isResize={!isExpandSidebar}
             isShowSidebar={isShowSidebar}
             onClose={() => {
-               width && width < 768 && setIsShowSidebar(false);
+               width && width < 1024 && setIsShowSidebar(false);
             }}
          />
          <main
-            className="mt-vz-header ml-0 md:ml-vz-sidebar w-full transition-[margin-left] duration-300"
+            className="mt-vz-header ml-0 lg:ml-vz-sidebar w-full transition-[margin-left] duration-300"
             style={{
                marginLeft:
-                  width && width > 767
+                  width && width > 1023
                      ? !isExpandSidebar
                         ? '70px'
                         : undefined
