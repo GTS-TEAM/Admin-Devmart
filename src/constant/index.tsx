@@ -10,7 +10,7 @@ import {
 
 export const ERROR_TOKEN = 'RefreshAccessTokenError';
 
-export const BASE_URL_API = 'https://api.devmart.software/api';
+export const BASE_URL_API = 'https://urchin-app-imxhj.ondigitalocean.app/api';
 
 export const ROUTES = {
    LOGIN: '/login',
@@ -73,3 +73,6 @@ export const TYPE_VARIANTS = {
 };
 
 export const SECOND = 1000;
+
+export const MIN_WIDTH_TABLET = 1024;
+export const MAX_WIDTH_TABLET = 1023;

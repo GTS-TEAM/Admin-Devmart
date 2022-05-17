@@ -14,7 +14,12 @@ const nextConfig = {
       includePaths: [path.join(__dirname, 'styles')],
    },
    images: {
-      domains: ['res.cloudinary.com', 'cf.shopee.vn', 'loremflickr.com'],
+      domains: [
+         'res.cloudinary.com',
+         'cf.shopee.vn',
+         'loremflickr.com',
+         'i.pinimg.com',
+      ],
    },
    webpack(config) {
       config.module.rules.push({

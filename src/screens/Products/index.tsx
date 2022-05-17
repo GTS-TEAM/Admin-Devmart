@@ -159,7 +159,7 @@ const Products: WithLayout = () => {
                         }}
                      >
                         <a>
-                           <h5 className="text-sm font-medium line-clamp-2">
+                           <h5 className="text-sm font-medium line-clamp-2 max-w-lg">
                               {record.name}
                            </h5>
                         </a>
@@ -172,6 +172,7 @@ const Products: WithLayout = () => {
                </div>
             );
          },
+         width: '512px',
       },
       {
          title: 'Stock',
@@ -235,7 +236,7 @@ const Products: WithLayout = () => {
                      </div>
                   }
                   placement="bottom"
-                  overlayClassName="vz-popover-action-product"
+                  overlayClassName="vz-popover"
                >
                   <button className="text-[#3577f1] bg-[rgba(53,119,241,.1)] w-8 h-8 flex items-center justify-center rounded hover:bg-[#3577f1] hover:text-white transition-all ">
                      <BiDotsHorizontalRounded />

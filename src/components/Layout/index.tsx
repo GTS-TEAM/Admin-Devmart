@@ -1,7 +1,8 @@
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
+import { MAX_WIDTH_TABLET, MIN_WIDTH_TABLET } from 'constant';
 import { useBodyOverflow, useObservationSize } from 'hooks';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 const Layout: React.FC<{
    children?: React.ReactNode;
@@ -12,27 +13,36 @@ const Layout: React.FC<{
 
    useBodyOverflow(isShowSidebar);
 
+   const handleToggleSidebar = useCallback(() => {
+      if (width && width < MIN_WIDTH_TABLET) {
+         setIsShowSidebar(!isShowSidebar);
+      } else {
+         setIsExpandSidebar(!isExpandSidebar);
+      }
+   }, [width, isExpandSidebar, isShowSidebar]);
+
+   const handleCloseSidebar = useCallback(() => {
+      width && width < MIN_WIDTH_TABLET && setIsShowSidebar(false);
+   }, [width]);
+
+   const leftOrMarginLeft = useMemo(() => {
+      return width && width > MAX_WIDTH_TABLET
+         ? !isExpandSidebar
+            ? '70px'
+            : undefined
+         : undefined;
+   }, [isExpandSidebar, width]);
+
    return (
       <div className="min-h-screen flex layout">
          <div
             className="fixed top-0 right-0 left-0 lg:left-vz-sidebar transition-[left] duration-300 z-50 "
             style={{
-               left:
-                  width && width > 1023
-                     ? !isExpandSidebar
-                        ? '70px'
-                        : undefined
-                     : undefined,
+               left: leftOrMarginLeft,
             }}
          >
             <Header
-               toggleSidebar={() => {
-                  if (width && width < 1024) {
-                     setIsShowSidebar(!isShowSidebar);
-                  } else {
-                     setIsExpandSidebar(!isExpandSidebar);
-                  }
-               }}
+               toggleSidebar={handleToggleSidebar}
                isResize={!isExpandSidebar}
                isShowSidebar={isShowSidebar}
             />
@@ -49,19 +59,12 @@ const Layout: React.FC<{
          <Sidebar
             isResize={!isExpandSidebar}
             isShowSidebar={isShowSidebar}
-            onClose={() => {
-               width && width < 1024 && setIsShowSidebar(false);
-            }}
+            onClose={handleCloseSidebar}
          />
          <main
             className="mt-vz-header ml-0 lg:ml-vz-sidebar w-full transition-[margin-left] duration-300"
             style={{
-               marginLeft:
-                  width && width > 1023
-                     ? !isExpandSidebar
-                        ? '70px'
-                        : undefined
-                     : undefined,
+               marginLeft: leftOrMarginLeft,
             }}
          >
             <div className="p-4 h-full">{children}</div>

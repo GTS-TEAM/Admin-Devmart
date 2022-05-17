@@ -4,6 +4,8 @@ import {
    ICategory,
    IChildCategory,
    IFilterProduct,
+   IMetadata,
+   IMetadataInput,
    IProduct,
    IResData,
 } from 'shared/types';
@@ -37,6 +39,15 @@ export const eCommerceApis = {
          urls: Array<string>;
       }>('https://isekai-api.me/api/upload', data);
    },
+   getAllMetaData: (url: string) => {
+      return axiosClient.get<IResData<IMetadata[]>>(url);
+   },
+   createMetadata: (data: IMetadataInput) => {
+      return axiosClient.post<IResData<IMetadata>>('/metadata', data);
+   },
+   updateMetadata: (id: string, data: IMetadataInput) => {
+      return axiosClient.put<IResData<IMetadata>>(`/metadata/${id}`, data);
+   },
 };
 
 export const fetcher = {
@@ -44,4 +55,6 @@ export const fetcher = {
       eCommerceApis.getAllCategories(url).then((res) => res.data.data),
    getAllProducts: (url: string, filler?: IFilterProduct) =>
       eCommerceApis.getAllProducts(url, filler).then((res) => res.data.data),
+   getAllMetadata: (url: string) =>
+      eCommerceApis.getAllMetaData(url).then((res) => res.data.data),
 };

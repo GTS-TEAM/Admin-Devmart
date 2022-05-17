@@ -1,9 +1,16 @@
-import { Avatar } from 'antd';
+import { Avatar, Popover } from 'antd';
+import Menu from 'components/Menu';
+import { MAX_WIDTH_TABLET } from 'constant';
 import { useTheme } from 'context/theme.context';
 import { useObservationSize } from 'hooks';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import React from 'react';
-import { AiOutlineMenu } from 'react-icons/ai';
+import {
+   AiOutlineLogout,
+   AiOutlineMenu,
+   AiOutlineSetting,
+   AiOutlineUser,
+} from 'react-icons/ai';
 import { BiMoon, BiSun } from 'react-icons/bi';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 
@@ -26,7 +33,7 @@ const Header: React.FC<Props> = ({
       <header className="bg-vz-header-bg flex items-center h-vz-header">
          <div className=" px-4 w-full flex items-center justify-between">
             <button onClick={toggleSidebar}>
-               {width && width > 767 ? (
+               {width && width > MAX_WIDTH_TABLET ? (
                   isResize ? (
                      <MdOutlineKeyboardArrowRight className="w-6 h-6" />
                   ) : (
@@ -51,10 +58,43 @@ const Header: React.FC<Props> = ({
                      <BiSun className="w-6 h-6" />
                   )}
                </button>
-               <div className="ml-4">
-                  <Avatar>
-                     {session?.user?.name?.slice(0, 1).toUpperCase()}
-                  </Avatar>
+               <div className="ml-4 ">
+                  <Popover
+                     trigger="click"
+                     content={
+                        <Menu>
+                           <div className="pb-2">
+                              <Menu.MenuItem>
+                                 <AiOutlineUser className="w-4 h-4" />
+                                 <span>Profile</span>
+                              </Menu.MenuItem>
+                              <Menu.MenuItem>
+                                 <AiOutlineSetting className="w-4 h-4" />
+                                 <span>Setting</span>
+                              </Menu.MenuItem>
+                           </div>
+                           <div className="pt-2 border-t border-vz-border-color">
+                              <Menu.MenuItem
+                                 onClick={() => {
+                                    signOut();
+                                 }}
+                              >
+                                 <AiOutlineLogout className="w-4 h-4" />
+                                 <span>Logout</span>
+                              </Menu.MenuItem>
+                           </div>
+                        </Menu>
+                     }
+                     placement="bottomRight"
+                     overlayClassName="vz-popover z-[200]"
+                  >
+                     <Avatar
+                        alt={session?.user?.name as string}
+                        className="cursor-pointer"
+                     >
+                        {session?.user?.name?.charAt(0)}
+                     </Avatar>
+                  </Popover>
                </div>
             </div>
          </div>
