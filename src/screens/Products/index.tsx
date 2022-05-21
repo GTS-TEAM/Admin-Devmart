@@ -139,7 +139,6 @@ const Products: WithLayout = () => {
                setPage(1);
             }
          } catch (error) {
-            console.log(error);
             message.success('Something went wrong');
          }
       },

@@ -132,7 +132,6 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                               isRequire
                               label="Product Description"
                               onChange={(e) => {
-                                 console.log(e.target.value);
                                  setDescription(e.target.value);
                               }}
                               propsTextArea={{
