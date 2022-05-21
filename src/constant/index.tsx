@@ -2,6 +2,7 @@ import { IconType } from 'react-icons';
 import {
    AiOutlineAppstore,
    AiOutlineContainer,
+   AiOutlineInsertRowBelow,
    AiOutlineShop,
    AiOutlineSlack,
    AiOutlineUser,
@@ -9,7 +10,7 @@ import {
 
 export const ERROR_TOKEN = 'RefreshAccessTokenError';
 
-export const BASE_URL_API = 'https://api.devmart.software/api';
+export const BASE_URL_API = 'https://api.devmart.software/ms-golang/api';
 
 export const ROUTES = {
    LOGIN: '/login',
@@ -18,10 +19,11 @@ export const ROUTES = {
    PRODUCTS: '/products',
    ADD_PRODUCT: '/products/add-product',
    ORDERS: '/orders',
-   CUSTOMERS: '/customer',
+   CUSTOMERS: '/customers',
    CATEGORIES: '/categories',
    ADD_CATEGORIES: '/add-category',
    PRODUCT_DETAIL: '/products/[id]',
+   METADATA: '/metadata',
 };
 
 export const IS_SERVER = typeof window === 'undefined';
@@ -57,6 +59,11 @@ export const SIDEBAR: {
       icon: AiOutlineShop,
       path: ROUTES.ORDERS,
    },
+   {
+      name: 'Metadata',
+      path: ROUTES.METADATA,
+      icon: AiOutlineInsertRowBelow,
+   },
 ];
 
 export const TYPE_VARIANTS = {
@@ -66,3 +73,6 @@ export const TYPE_VARIANTS = {
 };
 
 export const SECOND = 1000;
+
+export const MIN_WIDTH_TABLET = 1024;
+export const MAX_WIDTH_TABLET = 1023;

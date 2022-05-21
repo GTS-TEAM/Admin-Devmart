@@ -51,6 +51,7 @@ const SignUp = () => {
             email: data.email,
             password: data.password,
             name: data.username,
+            role: 'admin',
          });
          setLoading(false);
          message.success('Register successfully');

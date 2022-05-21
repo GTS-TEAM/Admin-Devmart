@@ -14,7 +14,6 @@ const handleRefreshToken = async (token: JWT) => {
          })
          .then((value) => value.data.data);
 
-      console.log('refresh token here:', tokenData);
       const { access_token: accessToken, refresh_token: refreshToken } =
          tokenData;
       const accessTokenExpirationTime =
@@ -50,12 +49,16 @@ export default NextAuth({
          authorize: async (credentials) => {
             try {
                //login
+
                const data: IResLogin = await axios
                   .post(`${BASE_URL_API}/auth/login`, {
                      email: credentials?.email,
                      password: credentials?.password,
+                     role: 'admin',
                   })
-                  .then((value) => value.data.data);
+                  .then((value) => {
+                     return value.data.data;
+                  });
 
                if (data) {
                   // neu co data
@@ -78,7 +81,6 @@ export default NextAuth({
                }
                return null;
             } catch (e: any) {
-               console.log(e);
                throw new Error(e.response.data.message);
             }
          },
@@ -86,13 +88,15 @@ export default NextAuth({
    ],
    callbacks: {
       async jwt({ token, user }) {
-         if (token && user) {
+         // console.log(user);
+         // console.log('user::', user);
+         if (token) {
             const {
                accessToken,
                accessTokenExpires,
                refreshToken,
                ...userData
-            } = user;
+            } = token;
             return {
                accessToken,
                accessTokenExpires,
@@ -105,7 +109,6 @@ export default NextAuth({
          if (new Date().getTime() < token.accessTokenExpires) {
             return token;
          }
-
          // refresh token here
          // nguoc lai thi refresh token
          return await handleRefreshToken(token);
