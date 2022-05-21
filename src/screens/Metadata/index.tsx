@@ -8,6 +8,7 @@ import React from 'react';
 import { AiOutlineEdit, AiOutlinePlus, AiOutlineRest } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { IMetadata, WithLayout } from 'shared/types';
+import stylesTag from 'styles/components/tag.module.scss';
 import useSWR from 'swr';
 
 const Metadata: WithLayout = () => {
@@ -29,7 +30,9 @@ const Metadata: WithLayout = () => {
                   {record.values.map((_value) => {
                      return (
                         <li key={_value}>
-                           <Tag color="magenta">{_value}</Tag>
+                           <Tag className={`${stylesTag['ant-tag']} h`}>
+                              {_value}
+                           </Tag>
                         </li>
                      );
                   })}

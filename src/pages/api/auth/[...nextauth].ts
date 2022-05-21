@@ -50,12 +50,18 @@ export default NextAuth({
          authorize: async (credentials) => {
             try {
                //login
+
                const data: IResLogin = await axios
                   .post(`${BASE_URL_API}/auth/login`, {
                      email: credentials?.email,
                      password: credentials?.password,
+                     role: 'admin',
                   })
-                  .then((value) => value.data.data);
+                  .then((value) => {
+                     console.log(value.data.data);
+                     return value.data.data;
+                  });
+               console.log(data);
 
                if (data) {
                   // neu co data
@@ -78,7 +84,7 @@ export default NextAuth({
                }
                return null;
             } catch (e: any) {
-               console.log(e);
+               console.log(e.response.data);
                throw new Error(e.response.data.message);
             }
          },

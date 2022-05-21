@@ -25,7 +25,12 @@ export const eCommerceApis = {
       return axiosClient.post<IResData<IChildCategory>>('/category', data);
    },
    getAllProducts: (url: string, filler?: IFilterProduct) => {
-      return axiosClient.get<IResData<any>>(url, {
+      return axiosClient.get<
+         IResData<{
+            total: number;
+            products: IProduct[];
+         }>
+      >(url, {
          params: {
             ...filler,
          },
@@ -33,6 +38,11 @@ export const eCommerceApis = {
    },
    addProduct: (data: any) => {
       return axiosClient.post<IResData<IProduct>>('/product', data);
+   },
+   removeProduct: (ids: Array<string>) => {
+      return axiosClient.delete<IResData<null>>('/product', {
+         data: ids,
+      });
    },
    uploadImages: (data: any) => {
       return axios.post<{

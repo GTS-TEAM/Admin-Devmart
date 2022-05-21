@@ -78,10 +78,11 @@ const Login: React.FC = () => {
                                           {
                                              email,
                                              password,
-                                             callbackUrl: `${window.location.origin}/`,
+                                             callbackUrl: `${window.location.origin}`,
                                              redirect: false,
                                           }
                                        );
+                                       console.log(res);
 
                                        if (res?.error) {
                                           setIsLoading(false);

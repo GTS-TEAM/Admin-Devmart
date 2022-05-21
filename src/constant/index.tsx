@@ -10,7 +10,7 @@ import {
 
 export const ERROR_TOKEN = 'RefreshAccessTokenError';
 
-export const BASE_URL_API = 'https://urchin-app-imxhj.ondigitalocean.app/api';
+export const BASE_URL_API = 'https://api.devmart.software/ms-golang/api';
 
 export const ROUTES = {
    LOGIN: '/login',
