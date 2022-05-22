@@ -1,5 +1,5 @@
 import { requireAuth } from 'components';
-import type { GetServerSideProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { Home } from 'screens';
 
 export default Home;
