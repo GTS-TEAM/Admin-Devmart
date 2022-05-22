@@ -1,18 +1,40 @@
 import { Button, Popover, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { fetcher } from 'apis';
-import { Auth, HeaderBreadcrumb, Layout, Menu } from 'components';
+import {
+   Auth,
+   HeaderBreadcrumb,
+   Layout,
+   Menu,
+   ModalMetadata,
+} from 'components';
 import { ROUTES } from 'constant';
 import { TableCustom } from 'custom';
-import React from 'react';
+import { AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
 import { AiOutlineEdit, AiOutlinePlus, AiOutlineRest } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { IMetadata, WithLayout } from 'shared/types';
+import { IMetadata, ITagInput, WithLayout } from 'shared/types';
 import stylesTag from 'styles/components/tag.module.scss';
 import useSWR from 'swr';
+import { v4 } from 'uuid';
 
 const Metadata: WithLayout = () => {
    const { data: metadata } = useSWR('/metadata', fetcher.getAllMetadata);
+   const [showModalAdd, setShowModalAdd] = useState<boolean>(false);
+   const [showModalEdit, setShowModalEdit] = useState<boolean>(false);
+   const [isShowMenuActions, setIsShowMenuActions] = useState<{
+      id: string;
+      show: boolean;
+   }>({
+      id: '',
+      show: false,
+   });
+   const [dataEdit, setDataEdit] = useState<{
+      name: string;
+      values: Array<ITagInput>;
+      id: string;
+   } | null>(null);
 
    const columns: ColumnsType<IMetadata> = [
       {
@@ -47,10 +69,44 @@ const Metadata: WithLayout = () => {
          render: (_, record) => {
             return (
                <Popover
+                  trigger="click"
+                  visible={
+                     isShowMenuActions.show &&
+                     record.id === isShowMenuActions.id
+                  }
+                  onVisibleChange={(visible) => {
+                     setIsShowMenuActions({
+                        id: record.id,
+                        show: visible,
+                     });
+                  }}
                   content={
                      <div>
                         <Menu>
-                           <Menu.MenuItem>
+                           <Menu.MenuItem
+                              onClick={() => {
+                                 setIsShowMenuActions({
+                                    id: '',
+                                    show: false,
+                                 });
+                                 setShowModalEdit(true);
+                                 const _dataEdit: {
+                                    name: string;
+                                    values: Array<ITagInput>;
+                                    id: string;
+                                 } = {
+                                    name: record.name,
+                                    values: record.values.map((_value) => {
+                                       return {
+                                          id: v4(),
+                                          value: _value,
+                                       };
+                                    }),
+                                    id: record.id,
+                                 };
+                                 setDataEdit(_dataEdit);
+                              }}
+                           >
                               <AiOutlineEdit className="w-4 h-4" />
                               <span className="text-vz-text-color-body">
                                  Edit
@@ -89,7 +145,10 @@ const Metadata: WithLayout = () => {
          <div className="card">
             <div className="w-full">
                <div className="flex items-center justify-between p-4">
-                  <Button className="vz-button-primary vz-button flex items-center justify-center text-xs transition-all">
+                  <Button
+                     className="vz-button-primary vz-button flex items-center justify-center text-xs transition-all"
+                     onClick={() => setShowModalAdd(true)}
+                  >
                      <AiOutlinePlus className="flex-shrink-0 mr-2 w-4 h-4" />
                      <span className="flex-shrink-0">Add metadata</span>
                   </Button>
@@ -103,6 +162,26 @@ const Metadata: WithLayout = () => {
                />
             </div>
          </div>
+         <AnimatePresence>
+            {showModalAdd && (
+               <ModalMetadata
+                  type="add"
+                  onCancel={() => {
+                     setShowModalAdd(false);
+                  }}
+               />
+            )}
+            {showModalEdit && (
+               <ModalMetadata
+                  type="edit"
+                  onCancel={() => {
+                     setShowModalEdit(false);
+                     setDataEdit(null);
+                  }}
+                  initDataEdit={dataEdit}
+               />
+            )}
+         </AnimatePresence>
       </div>
    );
 };

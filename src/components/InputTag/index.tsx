@@ -5,10 +5,11 @@ import { v4 } from 'uuid';
 
 interface Props {
    onTagChange?: (tags: ITagInput[]) => any;
+   values?: ITagInput[];
 }
 
-const InputTag = ({ onTagChange }: Props) => {
-   const [tags, setTags] = useState<ITagInput[]>([]);
+const InputTag = ({ onTagChange, values }: Props) => {
+   const [tags, setTags] = useState<ITagInput[]>(values || []);
    const [html, setHtml] = useState<string>('');
 
    useEffect(() => {
