@@ -63,7 +63,7 @@ export const InputDropdown: React.FC<Props> = ({
                   exit={TYPE_VARIANTS.EXIT}
                >
                   <Menu>
-                     {listValues.map((_value) => {
+                     {listValues?.map((_value) => {
                         return (
                            <Menu.MenuItem
                               key={_value.name}
