@@ -1,5 +1,6 @@
-import { SIDEBAR } from 'constant';
+import { MAX_WIDTH_TABLET, MIN_WIDTH_TABLET, SIDEBAR } from 'constant';
 import { useObservationSize } from 'hooks';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -19,13 +20,13 @@ const Sidebar: React.FC<Props> = ({ isResize, isShowSidebar, onClose }) => {
          className="h-screen bg-vz-bg-sidebar fixed top-0 left-[-100%] lg:left-0 bottom-0 w-vz-sidebar lg:transition-[width] !duration-300 transition-[left] z-[110]"
          style={{
             width:
-               width && width > 1023
+               width && width > MAX_WIDTH_TABLET
                   ? isResize
                      ? '70px'
                      : undefined
                   : undefined,
             left:
-               width && width < 1024
+               width && width < MIN_WIDTH_TABLET
                   ? isShowSidebar
                      ? '0'
                      : '-100%'
@@ -33,9 +34,38 @@ const Sidebar: React.FC<Props> = ({ isResize, isShowSidebar, onClose }) => {
          }}
       >
          <div className="h-vz-header flex items-center justify-center">
-            <h1 className="font-black text-3xl text-white ">
-               {width && width > 767 && (isResize ? 'O' : 'Logo')}
-               {width && width < 767 && 'Logo'}
+            <h1 className="font-semibold text-3xl text-white ">
+               {width &&
+                  width > MAX_WIDTH_TABLET &&
+                  (isResize ? (
+                     <Image
+                        src="/images/logo-removebg.png"
+                        alt="Logo"
+                        width={40}
+                        height={40}
+                     />
+                  ) : (
+                     <div className="flex items-center space-x-2">
+                        <Image
+                           src="/images/logo-removebg.png"
+                           alt="Logo"
+                           width={40}
+                           height={40}
+                        />
+                        <span>DevMart</span>
+                     </div>
+                  ))}
+               {width && width < MAX_WIDTH_TABLET && (
+                  <div className="flex items-center space-x-2">
+                     <Image
+                        src="/images/logo-removebg.png"
+                        alt="Logo"
+                        width={40}
+                        height={40}
+                     />
+                     <span>DevMart</span>
+                  </div>
+               )}
             </h1>
          </div>
          <div>
@@ -57,7 +87,7 @@ const Sidebar: React.FC<Props> = ({ isResize, isShowSidebar, onClose }) => {
                                  <span
                                     className={` duration-200 transition-[opacity] ${
                                        width &&
-                                       width > 767 &&
+                                       width > MAX_WIDTH_TABLET &&
                                        (isResize
                                           ? 'opacity-0 invisible'
                                           : 'opacity-100 visible')

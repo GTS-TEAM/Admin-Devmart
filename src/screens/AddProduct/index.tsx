@@ -132,7 +132,6 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                               isRequire
                               label="Product Description"
                               onChange={(e) => {
-                                 console.log(e.target.value);
                                  setDescription(e.target.value);
                               }}
                               propsTextArea={{
@@ -146,7 +145,7 @@ const AddProduct: WithLayout = ({ categories }: Props) => {
                         </div>
                      </div>
                   </Card>
-                  <Card title="Pricing">
+                  <Card title="Pricing" isHaveClassBody>
                      <p className="text-muted mb-2">Add price to product</p>
                      <InputCustom
                         label="Price"

@@ -5,7 +5,7 @@ import React from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import { dropIn, FadeIn } from 'utils';
 
-interface Props {
+export interface PropsWrap {
    children?: React.ReactNode;
    handleOk?: () => any;
    handleCancel?: () => any;
@@ -19,7 +19,7 @@ interface Props {
    textCancel?: string;
 }
 
-const ModalWrap: React.FC<Props> = (props) => {
+const ModalWrap: React.FC<PropsWrap> = (props) => {
    return (
       <motion.div
          variants={FadeIn}

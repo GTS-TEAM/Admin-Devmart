@@ -1,9 +1,10 @@
 import { Button, Col, message, Popover, Radio, Row, Tree } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { fetcher } from 'apis';
+import { eCommerceApis, fetcher } from 'apis';
 import { Auth, HeaderBreadcrumb, Layout, Menu } from 'components';
 import { ROUTES } from 'constant';
 import { InputCustom, TableCustom } from 'custom';
+import { useDebounce } from 'hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -27,8 +28,6 @@ let fallbackMaxPrice: number | undefined = undefined;
 let fallbackCategoriesId: Array<string> = [];
 let minRating: undefined | number;
 
-console.log(fallbackPage);
-
 const Products: WithLayout = () => {
    const router = useRouter();
    const [page, setPage] = useState<number>(fallbackPage || 1);
@@ -47,15 +46,13 @@ const Products: WithLayout = () => {
    const [rating, setRating] = useState<number | undefined>(minRating);
    const [category_id, setCategory_id] =
       useState<Array<string>>(fallbackCategoriesId);
-   const { data: products } = useSWR(
-      [
-         '/product',
-         {
-            ...router.query,
-         },
-      ],
+   const { data: products, mutate } = useSWR(
+      ['/product', { ...router.query }],
       fetcher.getAllProducts
    );
+   const [idsToRemove, setIdsToRemove] = useState<Array<string>>([]);
+   const [searchTemp, setSearchTemp] = useState<string>('');
+   const debounceValue = useDebounce(searchTemp, 700);
 
    const handleClearAll = useCallback(() => {
       setCategory_id([]);
@@ -68,6 +65,9 @@ const Products: WithLayout = () => {
          start: '',
       });
       setRating(undefined);
+      minRating = undefined;
+      fallbackMinPrice = undefined;
+      fallbackMaxPrice = undefined;
    }, []);
 
    const handleFilterPrice = useCallback(() => {
@@ -96,21 +96,6 @@ const Products: WithLayout = () => {
       }
    }, [filterPrice, rangeInput]);
 
-   useEffect(() => {
-      router.push({
-         pathname: ROUTES.PRODUCTS,
-         query: {
-            min_rating: rating ? rating : [],
-            category_id,
-            page,
-            limit: LIMIT,
-            min_price: filterPrice.min_price ? filterPrice.min_price : [],
-            max_price: filterPrice.max_price ? filterPrice.max_price : [],
-         },
-      });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [rating, category_id, page, filterPrice]);
-
    const treeData = useMemo(() => {
       return categories
          ? categories.map((_category) => {
@@ -131,6 +116,40 @@ const Products: WithLayout = () => {
            })
          : [];
    }, [categories]);
+
+   const handleRemoveProducts = useCallback(
+      async (ids: Array<string>) => {
+         try {
+            const {
+               data: { message: msg },
+            } = await eCommerceApis.removeProduct(ids);
+            if (products) {
+               mutate({
+                  ...products, // get prev data
+                  products: [...products.products].filter((_product) => {
+                     if (ids.includes(_product.id)) {
+                        // check id have in ids choose to delete
+                        return false;
+                     }
+                     return true;
+                  }),
+               });
+            }
+            message.success(msg);
+            setIdsToRemove([]);
+
+            if (
+               ids.length === LIMIT ||
+               ids.length === products?.products.length
+            ) {
+               setPage(1);
+            }
+         } catch (error) {
+            message.success('Something went wrong');
+         }
+      },
+      [mutate, products]
+   );
 
    const columns: ColumnsType<IProduct> = [
       {
@@ -159,7 +178,7 @@ const Products: WithLayout = () => {
                         }}
                      >
                         <a>
-                           <h5 className="text-sm font-medium line-clamp-2">
+                           <h5 className="text-sm font-medium line-clamp-2 max-w-lg">
                               {record.name}
                            </h5>
                         </a>
@@ -172,6 +191,7 @@ const Products: WithLayout = () => {
                </div>
             );
          },
+         width: '512px',
       },
       {
          title: 'Stock',
@@ -225,7 +245,11 @@ const Products: WithLayout = () => {
                                  Edit
                               </span>
                            </Menu.MenuItem>
-                           <Menu.MenuItem>
+                           <Menu.MenuItem
+                              onClick={() => {
+                                 handleRemoveProducts([record.id]);
+                              }}
+                           >
                               <AiOutlineRest className="w-4 h-4" />
                               <span className="text-vz-text-color-body">
                                  Remove
@@ -235,7 +259,7 @@ const Products: WithLayout = () => {
                      </div>
                   }
                   placement="bottom"
-                  overlayClassName="vz-popover-action-product"
+                  overlayClassName="vz-popover"
                >
                   <button className="text-[#3577f1] bg-[rgba(53,119,241,.1)] w-8 h-8 flex items-center justify-center rounded hover:bg-[#3577f1] hover:text-white transition-all ">
                      <BiDotsHorizontalRounded />
@@ -245,6 +269,22 @@ const Products: WithLayout = () => {
          },
       },
    ];
+
+   useEffect(() => {
+      router.push({
+         pathname: ROUTES.PRODUCTS,
+         query: {
+            min_rating: rating ? rating : [],
+            category_id,
+            page,
+            limit: LIMIT,
+            min_price: filterPrice.min_price ? filterPrice.min_price : [],
+            max_price: filterPrice.max_price ? filterPrice.max_price : [],
+            name: debounceValue.trim().length > 0 ? debounceValue : [],
+         },
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [rating, category_id, page, filterPrice, debounceValue]);
 
    return (
       <div>
@@ -414,12 +454,34 @@ const Products: WithLayout = () => {
                               placeholder="Search products"
                               classNameWrap="mr-4"
                               className="text-xs"
+                              value={searchTemp}
+                              onChange={(e) => {
+                                 setSearchTemp(e.target.value);
+                              }}
                            />
                            <Button className="vz-button-primary vz-button text-xs">
                               Search
                            </Button>
                         </div>
                      </div>
+                     {idsToRemove.length > 0 && (
+                        <div className="p-4">
+                           <div className="flex items-center justify-end gap-4">
+                              <p>
+                                 Selected <strong>{idsToRemove.length}</strong>{' '}
+                                 results
+                              </p>
+                              <button
+                                 className="text-red-500 hover:underline"
+                                 onClick={() => {
+                                    handleRemoveProducts(idsToRemove);
+                                 }}
+                              >
+                                 Remove
+                              </button>
+                           </div>
+                        </div>
+                     )}
                      <TableCustom
                         loading={!products}
                         dataSource={products?.products}
@@ -437,6 +499,12 @@ const Products: WithLayout = () => {
                         }}
                         scroll={{
                            scrollToFirstRowOnChange: true,
+                        }}
+                        rowSelection={{
+                           type: 'checkbox',
+                           onChange: (selectedRowKeys) => {
+                              setIdsToRemove(selectedRowKeys as Array<string>);
+                           },
                         }}
                      />
                   </div>

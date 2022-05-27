@@ -54,6 +54,7 @@ export default NextAuth({
                   .post(`${BASE_URL_API}/auth/login`, {
                      email: credentials?.email,
                      password: credentials?.password,
+                     role: 'admin',
                   })
                   .then((value) => value.data.data);
 
@@ -122,3 +123,4 @@ export default NextAuth({
       signIn: ROUTES.LOGIN,
    },
 });
+1;

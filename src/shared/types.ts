@@ -99,3 +99,32 @@ export interface IFilterProduct {
    max_price?: number;
    min_rating?: number;
 }
+
+export interface IMetadata {
+   id: string;
+   created_at: string;
+   updated_at: string;
+   name: string;
+   values: Array<string>;
+}
+
+export interface IMetadataInput {
+   name: string;
+   values: Array<string>;
+}
+
+export interface IUser {
+   id: string;
+   created_at: string;
+   updated_at: string;
+   name: string;
+   email: string;
+   role: string;
+   phone: string;
+   status: 'active' | 'block';
+}
+
+export enum IStatusUser {
+   ACTIVE = 'active',
+   BLOCK = 'block',
+}

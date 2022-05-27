@@ -42,35 +42,37 @@ export const TableCustom: React.FC<Props<any>> = ({
       >
          <Table
             className={`vzTableCustom ${className || ''} `}
-            pagination={{
-               className: `vz-pagination-table flex flex-wrap ${
-                  props.dataSource?.length === 0 || !props.dataSource
-                     ? 'hidden'
-                     : ''
-               }`,
-               total: props.total,
-               showTotal: (total, range) => (
-                  <p className="text-[#878a99] flex-shrink-0">{`Show ${range[0]} to ${range[1]} of ${total} results `}</p>
-               ),
-               itemRender: (page, type, originalElement) => {
-                  if (type === 'prev') {
-                     return (
-                        <a className="h-full disabled:text-[#878a99] text-vz-link  bg-vz-card-bg border border-vz-border-color rounded py-1 px-4 flex items-center justify-center hover:text-vz-link">
-                           Previous
-                        </a>
-                     );
-                  }
-                  if (type === 'next') {
-                     return (
-                        <a className="h-full disabled:text-[#878a99] text-vz-link  bg-vz-card-bg border border-vz-border-color rounded py-1 px-4 flex items-center justify-center hover:text-vz-link">
-                           Next
-                        </a>
-                     );
-                  }
-                  return originalElement;
-               },
-               ...pagination,
-            }}
+            pagination={
+               pagination && {
+                  className: `vz-pagination-table flex flex-wrap ${
+                     props.dataSource?.length === 0 || !props.dataSource
+                        ? 'hidden'
+                        : ''
+                  }`,
+                  total: props.total,
+                  showTotal: (total, range) => (
+                     <p className="text-[#878a99] flex-shrink-0">{`Show ${range[0]} to ${range[1]} of ${total} results `}</p>
+                  ),
+                  itemRender: (page, type, originalElement) => {
+                     if (type === 'prev') {
+                        return (
+                           <a className="h-full disabled:text-[#878a99] text-vz-link  bg-vz-card-bg border border-vz-border-color rounded py-1 px-4 flex items-center justify-center hover:text-vz-link">
+                              Previous
+                           </a>
+                        );
+                     }
+                     if (type === 'next') {
+                        return (
+                           <a className="h-full disabled:text-[#878a99] text-vz-link  bg-vz-card-bg border border-vz-border-color rounded py-1 px-4 flex items-center justify-center hover:text-vz-link">
+                              Next
+                           </a>
+                        );
+                     }
+                     return originalElement;
+                  },
+                  ...pagination,
+               }
+            }
             {...props}
          />
       </ConfigProvider>

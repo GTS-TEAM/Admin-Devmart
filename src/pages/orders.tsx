@@ -1,8 +1,8 @@
 import { requireAuth } from 'components';
 import { GetServerSideProps } from 'next';
-import { Home } from 'screens';
+import { Orders } from 'screens';
 
-export default Home;
+export default Orders;
 
 export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
    return {
