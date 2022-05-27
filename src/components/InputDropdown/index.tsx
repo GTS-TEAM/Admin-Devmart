@@ -13,12 +13,14 @@ interface Props {
    }[];
    defaultValue?: string;
    onValueChange?: (value: string) => any;
+   placeholder?: string;
 }
 
-export const InputDropdown: React.FC<Props> = ({
+const InputDropdown: React.FC<Props> = ({
    listValues,
    defaultValue,
    onValueChange,
+   placeholder,
 }) => {
    const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
    const [value, setValue] = useState<string>(defaultValue || '');
@@ -41,7 +43,11 @@ export const InputDropdown: React.FC<Props> = ({
             onClick={() => setIsShowDropdown(true)}
          >
             <div className="flex items-center h-full w-full justify-between">
-               <span>{value.trim().length > 0 ? value : 'Choose variant'}</span>
+               <span>
+                  {value.trim().length > 0
+                     ? value.charAt(0).toUpperCase() + value.slice(1)
+                     : placeholder}
+               </span>
                <MdOutlineKeyboardArrowDown
                   className="w-4 h-4"
                   style={{
@@ -90,3 +96,5 @@ export const InputDropdown: React.FC<Props> = ({
       </div>
    );
 };
+
+export default InputDropdown;

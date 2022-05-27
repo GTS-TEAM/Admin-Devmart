@@ -1,5 +1,6 @@
 import { MAX_WIDTH_TABLET, MIN_WIDTH_TABLET, SIDEBAR } from 'constant';
 import { useObservationSize } from 'hooks';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -33,9 +34,38 @@ const Sidebar: React.FC<Props> = ({ isResize, isShowSidebar, onClose }) => {
          }}
       >
          <div className="h-vz-header flex items-center justify-center">
-            <h1 className="font-black text-3xl text-white ">
-               {width && width > MAX_WIDTH_TABLET && (isResize ? 'O' : 'Logo')}
-               {width && width < MAX_WIDTH_TABLET && 'Logo'}
+            <h1 className="font-semibold text-3xl text-white ">
+               {width &&
+                  width > MAX_WIDTH_TABLET &&
+                  (isResize ? (
+                     <Image
+                        src="/images/logo-removebg.png"
+                        alt="Logo"
+                        width={40}
+                        height={40}
+                     />
+                  ) : (
+                     <div className="flex items-center space-x-2">
+                        <Image
+                           src="/images/logo-removebg.png"
+                           alt="Logo"
+                           width={40}
+                           height={40}
+                        />
+                        <span>DevMart</span>
+                     </div>
+                  ))}
+               {width && width < MAX_WIDTH_TABLET && (
+                  <div className="flex items-center space-x-2">
+                     <Image
+                        src="/images/logo-removebg.png"
+                        alt="Logo"
+                        width={40}
+                        height={40}
+                     />
+                     <span>DevMart</span>
+                  </div>
+               )}
             </h1>
          </div>
          <div>

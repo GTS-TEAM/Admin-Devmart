@@ -76,3 +76,18 @@ export const SECOND = 1000;
 
 export const MIN_WIDTH_TABLET = 1024;
 export const MAX_WIDTH_TABLET = 1023;
+
+export const MONTHS = [
+   'Jan',
+   'Feb',
+   'Mar',
+   'Apr',
+   'May',
+   'June',
+   'July',
+   'Aug',
+   'Sept',
+   'Oct',
+   'Nov',
+   'Dec',
+];

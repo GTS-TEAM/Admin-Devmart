@@ -4,6 +4,7 @@ import { ROUTES } from 'constant';
 import { InputCustom } from 'custom';
 import { signIn } from 'next-auth/react';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -28,8 +29,16 @@ const Login: React.FC = () => {
             <BannerAuth />
             <div className="w-full  relative z-10">
                <div className="mb-12 text-center  font-medium my-4">
-                  <h1 className=" font-black text-4xl mt-12 mb-6 text-white">
-                     Logo here
+                  <h1 className=" font-semibold text-4xl mt-12 mb-6 text-white text-center flex items-center justify-center">
+                     <div className="flex items-center space-x-2">
+                        <Image
+                           src="/images/logo-removebg.png"
+                           alt="Logo"
+                           width={40}
+                           height={40}
+                        />
+                        <span>DevMart</span>
+                     </div>
                   </h1>
                   <span className="block text-white/50">E-commerce Admin</span>
                </div>

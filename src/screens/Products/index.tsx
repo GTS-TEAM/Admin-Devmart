@@ -4,6 +4,7 @@ import { eCommerceApis, fetcher } from 'apis';
 import { Auth, HeaderBreadcrumb, Layout, Menu } from 'components';
 import { ROUTES } from 'constant';
 import { InputCustom, TableCustom } from 'custom';
+import { useDebounce } from 'hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -50,6 +51,8 @@ const Products: WithLayout = () => {
       fetcher.getAllProducts
    );
    const [idsToRemove, setIdsToRemove] = useState<Array<string>>([]);
+   const [searchTemp, setSearchTemp] = useState<string>('');
+   const debounceValue = useDebounce(searchTemp, 700);
 
    const handleClearAll = useCallback(() => {
       setCategory_id([]);
@@ -62,6 +65,9 @@ const Products: WithLayout = () => {
          start: '',
       });
       setRating(undefined);
+      minRating = undefined;
+      fallbackMinPrice = undefined;
+      fallbackMaxPrice = undefined;
    }, []);
 
    const handleFilterPrice = useCallback(() => {
@@ -274,10 +280,11 @@ const Products: WithLayout = () => {
             limit: LIMIT,
             min_price: filterPrice.min_price ? filterPrice.min_price : [],
             max_price: filterPrice.max_price ? filterPrice.max_price : [],
+            name: debounceValue.trim().length > 0 ? debounceValue : [],
          },
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [rating, category_id, page, filterPrice]);
+   }, [rating, category_id, page, filterPrice, debounceValue]);
 
    return (
       <div>
@@ -447,6 +454,10 @@ const Products: WithLayout = () => {
                               placeholder="Search products"
                               classNameWrap="mr-4"
                               className="text-xs"
+                              value={searchTemp}
+                              onChange={(e) => {
+                                 setSearchTemp(e.target.value);
+                              }}
                            />
                            <Button className="vz-button-primary vz-button text-xs">
                               Search

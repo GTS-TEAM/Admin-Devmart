@@ -8,6 +8,8 @@ import {
    IMetadataInput,
    IProduct,
    IResData,
+   IStatusUser,
+   IUser,
 } from 'shared/types';
 
 export const eCommerceApis = {
@@ -58,6 +60,34 @@ export const eCommerceApis = {
    updateMetadata: (id: string, data: IMetadataInput) => {
       return axiosClient.put<IResData<IMetadata>>(`/metadata/${id}`, data);
    },
+   getAllCustomers: (
+      url: string,
+      params: {
+         limit?: number;
+         page?: number;
+         status?: IStatusUser;
+         name?: string;
+         email?: string;
+      }
+   ) => {
+      return axiosClient.get<IResData<Array<IUser>>>(url, {
+         params: {
+            ...params,
+         },
+      });
+   },
+   changeStatusCustomer: (status: string, customerId: string) => {
+      return axiosClient.patch(
+         '/customer',
+         {},
+         {
+            params: {
+               status,
+               customer_id: customerId,
+            },
+         }
+      );
+   },
 };
 
 export const fetcher = {
@@ -67,4 +97,14 @@ export const fetcher = {
       eCommerceApis.getAllProducts(url, filler).then((res) => res.data.data),
    getAllMetadata: (url: string) =>
       eCommerceApis.getAllMetaData(url).then((res) => res.data.data),
+   getAllCustomers: (
+      url: string,
+      params: {
+         limit?: number;
+         page?: number;
+         status?: IStatusUser;
+         name?: string;
+         email?: string;
+      }
+   ) => eCommerceApis.getAllCustomers(url, params).then((res) => res.data.data),
 };
