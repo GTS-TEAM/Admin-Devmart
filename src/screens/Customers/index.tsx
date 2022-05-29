@@ -4,6 +4,7 @@ import { eCommerceApis, fetcher } from 'apis';
 import {
    Auth,
    HeaderBreadcrumb,
+   InputDropdown,
    Layout,
    Menu,
    ModalCustomer,
@@ -11,15 +12,32 @@ import {
 import { MONTHS, ROUTES } from 'constant';
 import { TableCustom } from 'custom';
 import { AnimatePresence } from 'framer-motion';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineEdit, AiOutlineRest } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { VscTrash } from 'react-icons/vsc';
+import { FiSearch } from 'react-icons/fi';
+import { VscSettings, VscTrash } from 'react-icons/vsc';
 import { IStatusUser, IUser, WithLayout } from 'shared/types';
 import useSWR from 'swr';
 
+let fallbackPage = 1;
+const LIMIT = 10;
+
 const Customers: WithLayout = () => {
-   const { data: customers } = useSWR(['/customer'], fetcher.getAllCustomers);
+   const router = useRouter();
+   const [page, setPage] = useState<number>(fallbackPage);
+   const { data: customers } = useSWR(
+      [
+         '/customer',
+         {
+            limit: LIMIT,
+            page,
+            ...router.query,
+         },
+      ],
+      fetcher.getAllCustomers
+   );
    const [isShowMenuActions, setIsShowMenuActions] = useState<{
       id: string;
       show: boolean;
@@ -28,6 +46,30 @@ const Customers: WithLayout = () => {
       show: false,
    });
    const [showModalAdd, setShowModalAdd] = useState<boolean>(false);
+   const [filter, setFilter] = useState<{
+      name: string;
+      status: string;
+      email: string;
+   }>({
+      name: '',
+      status: '',
+      email: '',
+   });
+
+   const handleFilter = useCallback(() => {
+      if (filter.email || filter.status || filter.name) {
+         router.push({
+            pathname: ROUTES.CUSTOMERS,
+            query: {
+               page,
+               limit: LIMIT,
+               email: filter.email.length > 0 ? filter.email : [],
+               status: filter.status.length > 0 ? filter.status : [],
+               name: filter.name.length > 0 ? filter.name : [],
+            },
+         });
+      }
+   }, [router, filter, page]);
 
    const handelChangeStatus = async (status: string, id: string) => {
       if (status === IStatusUser.ACTIVE) {
@@ -36,6 +78,24 @@ const Customers: WithLayout = () => {
          await eCommerceApis.changeStatusCustomer(IStatusUser.ACTIVE, id);
       }
    };
+
+   const handleClearFilter = useCallback(() => {
+      setFilter({
+         email: '',
+         name: '',
+         status: '',
+      });
+      router.push({
+         pathname: ROUTES.CUSTOMERS,
+         query: {
+            page,
+            limit: LIMIT,
+            email: [],
+            name: [],
+            status: [],
+         },
+      });
+   }, [router, page]);
 
    const columns: ColumnsType<IUser> = [
       {
@@ -158,6 +218,16 @@ const Customers: WithLayout = () => {
       },
    ];
 
+   useEffect(() => {
+      router.push({
+         pathname: ROUTES.CUSTOMERS,
+         query: {
+            page,
+            limit: LIMIT,
+         },
+      });
+   }, [page]);
+
    return (
       <div>
          <HeaderBreadcrumb
@@ -187,15 +257,98 @@ const Customers: WithLayout = () => {
                      </Button>
                   </div>
                </div>
+               <div className="p-4">
+                  <div className="flex items-center gap-4">
+                     <div className="flex items-center vz-input focus-within:border-vz-input-focus-border  w-full ">
+                        <FiSearch className="w-4 h-4 mr-4 text-[#878a99]" />
+                        <input
+                           className=" bg-transparent text-vz-text-color-body w-full"
+                           type="text"
+                           placeholder="Search name customer"
+                           onChange={(e) => {
+                              setFilter((prevValues) => {
+                                 return {
+                                    ...prevValues,
+                                    name: e.target.value,
+                                 };
+                              });
+                           }}
+                           value={filter.name}
+                        />
+                     </div>
+                     <div className="flex items-center vz-input focus-within:border-vz-input-focus-border w-full">
+                        <FiSearch className="w-4 h-4 mr-4 text-[#878a99]" />
+                        <input
+                           className=" bg-transparent text-vz-text-color-body w-full"
+                           type="text"
+                           placeholder="Search email customer"
+                           onChange={(e) => {
+                              setFilter((prevValues) => {
+                                 return {
+                                    ...prevValues,
+                                    email: e.target.value,
+                                 };
+                              });
+                           }}
+                           value={filter.email}
+                        />
+                     </div>
+                     <InputDropdown
+                        listValues={[
+                           {
+                              name: 'All',
+                              value: 'all',
+                           },
+                           {
+                              name: 'Block',
+                              value: 'block',
+                           },
+                           {
+                              name: 'Active',
+                              value: 'active',
+                           },
+                        ]}
+                        placeholder="Choose status"
+                        onValueChange={(value) => {
+                           setFilter((prevValues) => {
+                              return {
+                                 ...prevValues,
+                                 status: value,
+                              };
+                           });
+                        }}
+                        valueInput={filter.status}
+                     />
+                     <Button
+                        className="vz-button vz-button-second"
+                        onClick={handleFilter}
+                     >
+                        <VscSettings className="mr-2 w-4 h-4" />
+                        <span>Filter</span>
+                     </Button>
+                     <button
+                        className="vz-button bg-[#f06448] hover:bg-[#f06448]/90 !text-white "
+                        onClick={handleClearFilter}
+                     >
+                        <VscSettings className="mr-2 w-4 h-4" />
+                        <span>Clear</span>
+                     </button>
+                  </div>
+               </div>
                <TableCustom
                   rowKey="id"
-                  pagination={false}
                   dataSource={customers}
                   loading={!customers}
                   columns={columns}
                   rowSelection={{
                      type: 'checkbox',
                      onChange: (selectedRowKeys) => {},
+                  }}
+                  pagination={{
+                     onChange: (page, pageSize) => {
+                        setPage(page);
+                        fallbackPage = page;
+                     },
                   }}
                />
             </div>

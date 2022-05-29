@@ -14,6 +14,7 @@ interface Props {
    defaultValue?: string;
    onValueChange?: (value: string) => any;
    placeholder?: string;
+   valueInput?: string;
 }
 
 const InputDropdown: React.FC<Props> = ({
@@ -21,9 +22,10 @@ const InputDropdown: React.FC<Props> = ({
    defaultValue,
    onValueChange,
    placeholder,
+   valueInput,
 }) => {
    const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
-   const [value, setValue] = useState<string>(defaultValue || '');
+   const [value, setValue] = useState<string>(valueInput || '');
    const listValueRef = useRef<HTMLDivElement | null>(null);
 
    useOnClickOutside(listValueRef, () => {
