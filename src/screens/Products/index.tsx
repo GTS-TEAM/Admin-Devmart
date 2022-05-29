@@ -68,6 +68,7 @@ const Products: WithLayout = () => {
       minRating = undefined;
       fallbackMinPrice = undefined;
       fallbackMaxPrice = undefined;
+      fallbackCategoriesId = [];
    }, []);
 
    const handleFilterPrice = useCallback(() => {
