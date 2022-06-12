@@ -8,6 +8,7 @@ import {
    IMetadataInput,
    IProduct,
    IResData,
+   IResLogin,
    IStatusUser,
    IUser,
 } from 'shared/types';
@@ -37,6 +38,9 @@ export const eCommerceApis = {
             ...filler,
          },
       });
+   },
+   getProductDetail: (url: string) => {
+      return axiosClient.get<IResData<IProduct>>(url);
    },
    addProduct: (data: any) => {
       return axiosClient.post<IResData<IProduct>>('/product', data);
@@ -107,4 +111,6 @@ export const fetcher = {
          email?: string;
       }
    ) => eCommerceApis.getAllCustomers(url, params).then((res) => res.data.data),
+   getProductDetail: (url: string) =>
+      eCommerceApis.getProductDetail(url).then((res) => res.data),
 };
